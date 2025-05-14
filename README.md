@@ -1,7 +1,3 @@
-아래는 Microsoft Data School 1기 GitHub README 예시입니다. 교육 기간, 커리큘럼, 프로젝트 구성을 깔끔하고 직관적으로 정리했습니다.
-
----
-
 # Microsoft Data School 1기
 
 ## 📅 교육 기간
