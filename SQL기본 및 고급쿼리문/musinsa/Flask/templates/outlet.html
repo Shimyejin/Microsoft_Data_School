@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Outlet Dive{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 1rem;">🔗 Outlet Dive</h2>
+
+<!-- 대분류 탭 -->
+<div style="margin-bottom: 0.5rem;">
+  {% for main in category_dict.keys() %}
+    {% if main == current_main %}
+      <strong style="margin-right: 1rem; border-bottom: 2px solid black;">{{ main }}</strong>
+    {% else %}
+      <a href="{{ url_for('outlet', main_category=main, category=category_dict[main][0]) }}"
+         style="margin-right: 1rem; color: gray; text-decoration: none;">
+        {{ main }}
+      </a>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<!-- 소분류 탭 -->
+<div style="margin-bottom: 1.5rem; background-color: #f2f2f2; padding: 0.5rem;">
+  {% for sub in category_dict[current_main] %}
+    {% if sub == current_sub %}
+      <strong style="margin-right: 1rem; border-bottom: 2px solid black;">{{ sub }}</strong>
+    {% else %}
+      <a href="{{ url_for('outlet', main_category=current_main, category=sub) }}"
+         style="margin-right: 1rem; color: gray; text-decoration: none;">
+        {{ sub }}
+      </a>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<!-- 필터 폼 -->
+<form method="get" style="margin-bottom: 2rem;">
+  <input type="hidden" name="main_category" value="{{ current_main }}">
+  <input type="hidden" name="category" value="{{ current_sub }}">
+  <label>브랜드:</label>
+  <input type="text" name="brand" placeholder="예: 르아르" value="{{ request.args.get('brand', '') }}">
+  <label>최소 할인율:</label>
+  <input type="number" name="discount_min" min="0" max="100" value="{{ request.args.get('discount_min', '') }}">
+  <label>최대 가격:</label>
+  <input type="number" name="price_max" min="0" value="{{ request.args.get('price_max', '') }}">
+  <button type="submit">필터 적용</button>
+</form>
+
+<!-- 상품 리스트 -->
+{% if products %}
+  <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+    {% for p in products %}
+      <div style="border: 1px solid #ccc; border-radius: 10px; padding: 1rem; width: 300px; background-color: white;">
+        <h3>{{ p.name }}</h3>
+        <p><strong>정가:</strong> {{ p.original_price }}원</p>
+        <p><strong>할인가:</strong> {{ p.discount_price }}원 ({{ p.discount_rate }}%)</p>
+        <p><strong>리뷰 수:</strong> {{ p.review_count }}</p>
+        <form method="post" action="{{ url_for('add_to_wishlist', product_id=p.product_id) }}">
+          {% if p.product_id in wishlist_ids %}
+            <button type="button" disabled>⭐ 찜 완료</button>
+          {% else %}
+            <button type="submit">⭐ 찜하기</button>
+          {% endif %}
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>조건에 맞는 상품이 없습니다.</p>
+{% endif %}
+
+<!-- 페이지네이션 -->
+{% if total_pages > 1 %}
+  <div style="margin-top: 2rem; text-align: center;">
+
+    {# 블록 계산 #}
+    {% set block_size = 5 %}
+    {% set current_block = ((page - 1) // block_size) + 1 %}
+    {% set block_start = (current_block - 1) * block_size + 1 %}
+    {% set block_end = [block_start + block_size - 1, total_pages]|min %}
+
+    {# << (첫 블록) #}
+    {% if block_start > 1 %}
+      <a href="{{ url_for('outlet', main_category=current_main, category=current_sub, page=1) }}">«</a>
+    {% endif %}
+
+    {# < (이전 페이지) #}
+    {% if page > 1 %}
+      <a href="{{ url_for('outlet', main_category=current_main, category=current_sub, page=page-1) }}">‹</a>
+    {% endif %}
+
+    {# 숫자들 #}
+    {% for p in range(block_start, block_end + 1) %}
+      {% if p == page %}
+        <strong style="margin: 0 5px;">[{{ p }}]</strong>
+      {% else %}
+        <a href="{{ url_for('outlet', main_category=current_main, category=current_sub, page=p) }}" style="margin: 0 5px;">{{ p }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {# > (다음 페이지) #}
+    {% if page < total_pages %}
+      <a href="{{ url_for('outlet', main_category=current_main, category=current_sub, page=page+1) }}">›</a>
+    {% endif %}
+
+    {# >> (마지막 블록) #}
+    {% if block_end < total_pages %}
+      <a href="{{ url_for('outlet', main_category=current_main, category=current_sub, page=total_pages) }}">»</a>
+    {% endif %}
+
+  </div>
+{% endif %}
+{% endblock %}

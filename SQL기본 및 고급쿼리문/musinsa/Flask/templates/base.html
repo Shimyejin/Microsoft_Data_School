@@ -1,0 +1,51 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}No.30 Closet{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      color: #333;
+      margin: 0;
+      background-color: white;  /* 배경을 흰색으로 */
+    }
+    nav {
+      background-color: #64c6ff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    nav a {
+      color: white;
+      margin-right: 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <nav style="background-color: #111; color: white; padding: 1rem; display: flex; justify-content: space-between;">
+    <div style="font-weight: bold;">No.30 Closet</div>
+    <div style="display: flex; gap: 1rem;">
+      <a href="/" style="color: white;">🙏 Closet</a>
+      <a href="/outlet" style="color: white;">🔗 Outlet Dive</a>
+      <a href="/charts" style="color: white;">📊 Analytics Splash</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
