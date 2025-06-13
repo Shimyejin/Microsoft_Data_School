@@ -10,16 +10,18 @@
 ### 정규 교과
 
 #### 1️⃣ 데이터 및 분석  
-- 데이터 개념 및 Azure Data 관리  
+- 데이터 개념 및 Azure Data 관리
+- 파이썬으로 데이터 수집,형태 및 분석
 - Power BI를 활용한 데이터 시각화  
 - SQL 기본 및 고급 쿼리 실습
 
 #### 2️⃣ Azure 기반 데이터 엔지니어링  
-- Azure Databricks를 활용한 대규모 데이터 병렬 처리  
-- Azure Synapse Analytics를 활용한 통합 분석 솔루션 설계  
+- Azure Databricks를 활용한 대규모 데이터 병렬 처리
+- AzureDataFactory&AzureMachineLearning을 활용한 솔루션설계
+- AzureFuction을 활용한 알람 및 경고 기능구현
 - Azure Stream Analytics를 활용한 실시간 데이터 처리  
-- Azure Function을 활용한 앱/함수형 기능 구현  
 - Fabric을 활용한 통합 솔루션 구성
+- AzureSQLDatabase구성 및 관리
 
 #### 3️⃣ SQL Server  
 - Azure SQL Server 운영 및 관리
