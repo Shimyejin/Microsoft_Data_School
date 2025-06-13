@@ -25,6 +25,25 @@
 * **SQL Server**
 
   * Azure SQL Server 운영 및 관리
+---
+## 🛠️ Skills
+
+### Languages & Tools  
+<p>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Azure%20Databricks-EF3E42?style=for-the-badge&logo=databricks&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Azure%20OpenAI-0089D6?style=for-the-badge&logo=openai&logoColor=white"/>
+  <img src="https://img.shields.io/badge/REST%20API-25A162?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/SentenceTransformer-00599C?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/YouTube%20API-FF0000?style=for-the-badge&logo=youtube&logoColor=white"/>
+  <img src="https://img.shields.io/badge/psycopg2-336791?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/yt--dlp-FF8800?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/>
+</p>
 
 ---
 
