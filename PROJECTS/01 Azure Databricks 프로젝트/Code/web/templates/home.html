@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WELCOME TO MUPIC</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+    body {
+        background-color: black;
+        margin: 0;
+        overflow-x: hidden;
+        height: 100vh;
+        position: relative;
+        font-family: 'Press Start 2P', cursive, monospace;
+    }
+    .center-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 1;
+    }
+    .background-overlay {
+        background-image: url('{{ url_for('static', filename='homeimg/background.png') }}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        z-index: 0;
+    }
+    .frame-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    }
+    .frame-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .start-button {
+        max-width: 28%;
+        height: auto;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: transform 0.2s;
+    }
+    .start-button:hover {
+        transform: scale(1.1);
+    }
+    .imgup-img {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 45%;
+        height: auto;
+    }
+    .imgup-img2 {
+        position: absolute;
+        top: 140%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 45%;
+        height: auto;
+    }
+    .upload-img {
+        position: absolute;
+        top: 180%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 10%;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .upload-img:hover {
+        transform: translateX(-50%) scale(1.1);
+    }
+    .image-preview {
+        position: absolute;
+        top: 205%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 200px;
+        max-height: 200px;
+        border: 3px solid #00ff00;
+        border-radius: 10px;
+        display: none;
+        z-index: 2;
+    }
+
+    .imgup-img3 {
+        position: absolute;
+        top: 240%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 45%;
+        height: auto;
+    }
+    .button-grid {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+        top: 270%;
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+    .button-row {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        position: relative;
+    }
+    .genre-button {
+        width: 140px;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .genre-button:hover {
+        transform: scale(1.1);
+    }
+    .play-button-container {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10px;
+        z-index: 3;
+    }
+    .play-button {
+        max-width: 150px;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    #play-img {
+        display: none;
+    }
+    #noplay-img {
+        display: block;
+    }
+    .play-button:hover {
+        transform: scale(1.1);
+    }
+    #play-button {
+        padding: 0;
+        background: none;
+        border: none;
+        caret-color: transparent;
+    }
+    .black-img {
+        position: absolute;
+        top: 320%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 10%;
+        height: auto;
+    }
+    @keyframes bounceCoin {
+        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+        40% { transform: translateX(-50%) translateY(-10px); }
+        60% { transform: translateX(-50%) translateY(-5px); }
+    }
+    .bounce {
+        animation: bounceCoin 1s infinite;
+    }
+    .glitch-container {
+        text-align: center;
+        font-family: 'Press Start 2P', cursive, monospace;
+        color: white;
+        line-height: 1.5;
+        transform: translateY(30px);
+    }
+    .glitch-text {
+        position: relative;
+        animation: glitch 1s infinite;
+    }
+    .welcome-text { font-size: 5em; }
+    .mupic-text { font-size: 10em; color: yellow; }
+    @keyframes glitch {
+        0% { text-shadow: 2px 2px red, -2px -2px rgb(0, 255, 13); }
+        20% { text-shadow: -2px -2px red, 2px 2px rgb(0, 255, 13); }
+        40% { text-shadow: 2px -2px red, -2px 2px rgb(0, 255, 13); }
+        60% { text-shadow: -2px 2px red, 2px -2px rgb(0, 255, 13); }
+        80% { text-shadow: 2px 2px red, -2px -2px rgb(0, 255, 13); }
+        100% { text-shadow: -2px -2px red, 2px 2px rgb(0, 255, 13); }
+    }
+</style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="frame-container">
+        <img src="{{ url_for('static', filename='homeimg/frame.png') }}" alt="frame" class="frame-img">
+    </div>
+    <div class="center-container">
+        <div class="glitch-container">
+            <div class="glitch-text welcome-text">WELCOME TO</div>
+            <div class="glitch-text mupic-text">MUPIC</div>
+        </div>
+        <img src="{{ url_for('static', filename='homeimg/start.png') }}" alt="START" class="start-button" id="start-button">
+    </div>
+    <img src="{{ url_for('static', filename='homeimg/imgup1.png') }}" alt="IMG UP" class="imgup-img">
+    <img src="{{ url_for('static', filename='homeimg/imgup2.png') }}" alt="IMG UP" class="imgup-img2">
+    <img id="image-preview" class="image-preview" alt="Image Preview">
+    <img src="{{ url_for('static', filename='homeimg/upload.png') }}" alt="UPLOAD BUTTON" class="upload-img" id="upload-img">
+    <img src="{{ url_for('static', filename='homeimg/imgup3.png') }}" alt="IMG UP 3" class="imgup-img3">
+    <div class="button-grid">
+        {% for row in range(4) %}
+            <div class="button-row">
+                {% for col in range(1,5) %}
+                    {% set index = row * 4 + col %}
+                    <img 
+                        src="{{ url_for('static', filename='grey_buttons/button_' + (row+1)|string + '_' + col|string + '.png') }}"
+                        class="genre-button"
+                        id="button_{{ row+1 }}_{{ col }}"
+                        onclick="toggleButton('{{ row+1 }}_{{ col }}')"
+                        alt="button_{{ row+1 }}_{{ col }}">
+                {% endfor %}
+                {% if row == 3 %}
+                    <div class="play-button-container">
+                        <button id="play-button">
+                            <img src="{{ url_for('static', filename='homeimg/play.png') }}" alt="PLAY BUTTON" id="play-img" class="play-button">
+                            <img src="{{ url_for('static', filename='homeimg/noplay.png') }}" alt="NO PLAY BUTTON" id="noplay-img" class="play-button">
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <img src="{{ url_for('static', filename='homeimg/black.png') }}" alt="Black Image" class="black-img">
+
+    <!-- 숨겨진 파일 입력 -->
+    <input type="file" id="file-input" accept=".png,.jpg,.jpeg,.bmp" style="display: none;">
+
+    <script>
+        const genreMap = {
+            '1_1': '가요', '1_2': '발라드', '1_3': '댄스', '1_4': '락/메탈',
+            '2_1': 'POP', '2_2': '랩/힙합', '2_3': '일렉트로니카', '2_4': '인디',
+            '3_1': '블루스/포크', '3_2': '트롯', '3_3': 'OST', '3_4': 'JPOP',
+            '4_1': '재즈', '4_2': '클래식', '4_3': '뉴에이지', '4_4': '월드뮤직'
+        };
+
+        let selectedButtons = [];
+        let selectedFile = null;
+
+        document.getElementById('start-button').addEventListener('click', () => {
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+        });
+
+        document.getElementById('upload-img').addEventListener('click', () => {
+            const buttonGrid = document.querySelector('.button-grid');
+            const gridPosition = buttonGrid.getBoundingClientRect().top + window.pageYOffset;
+            const offset = window.innerHeight / 2 - buttonGrid.offsetHeight / 2;
+            window.scrollTo({
+                top: gridPosition - offset,
+                behavior: 'smooth'
+            });
+            setTimeout(() => {
+                document.getElementById('file-input').click();
+            }, 500);
+        });
+
+        document.getElementById('file-input').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                alert('이미지 파일을 선택해주세요.');
+                return;
+            }
+            const allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
+            const maxSize = 10 * 1024 * 1024;
+            const extension = file.name.split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(extension)) {
+                alert('지원하지 않는 파일 형식입니다. (허용: png, jpg, jpeg, bmp)');
+                return;
+            }
+            if (file.size > maxSize) {
+                alert('파일 크기가 너무 큽니다. (최대 10MB)');
+                return;
+            }
+            selectedFile = file;
+            
+            // 이미지 미리보기 표시
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('image-preview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            
+            alert('이미지가 선택되었습니다. 이제 장르를 선택하고 플레이 버튼을 눌러주세요.');
+        });
+
+        document.getElementById('play-button').addEventListener('click', () => {
+            if (!selectedFile) {
+                alert('이미지 파일을 먼저 업로드해주세요.');
+                return;
+            }
+            if (selectedButtons.length === 0) {
+                alert('최소 1개의 장르를 선택해주세요.');
+                return;
+            }
+            const selectedGenres = selectedButtons.map(id => genreMap[id]);
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+            formData.append('selected_genres', selectedGenres.join(','));
+            fetch('/home/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(data.message || '업로드 실패');
+                    });
+                }
+            })
+            .catch(error => {
+                alert(`에러: ${error.message}`);
+            });
+        });
+
+        function toggleButton(buttonId) {
+            const button = document.getElementById('button_' + buttonId);
+            const currentSrc = button.src;
+            if (currentSrc.includes('/grey_buttons/')) {
+                if (selectedButtons.length >= 3) {
+                    alert('최대 3개까지만 선택할 수 있습니다.');
+                    return;
+                }
+                button.src = currentSrc.replace('/grey_buttons/', '/green_buttons/');
+                selectedButtons.push(buttonId);
+            } else {
+                button.src = currentSrc.replace('/green_buttons/', '/grey_buttons/');
+                selectedButtons = selectedButtons.filter(id => id !== buttonId);
+            }
+            updateSelectedButtonsDisplay();
+        }
+
+        function updateSelectedButtonsDisplay() {
+            // 플레이 버튼 상태 업데이트
+            const playImg = document.getElementById('play-img');
+            const noPlayImg = document.getElementById('noplay-img');
+            const playButtonContainer = document.querySelector('.play-button-container');
+            
+            if (selectedButtons.length > 0) {
+                playImg.style.display = 'block';
+                noPlayImg.style.display = 'none';
+                playButtonContainer.classList.add('bounce');
+            } else {
+                playImg.style.display = 'none';
+                noPlayImg.style.display = 'block';
+                playButtonContainer.classList.remove('bounce');
+            }
+        }
+
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        };
+    </script>
+</body>
+</html>

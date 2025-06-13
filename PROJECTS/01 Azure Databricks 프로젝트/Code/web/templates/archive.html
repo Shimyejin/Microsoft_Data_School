@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Archive</title>
+<style>
+    @font-face {
+        font-family: 'DungGeunMo';
+        src: url('{{ url_for('static', filename='fonts/DungGeunMo.ttf') }}') format('truetype');
+    }
+    body {
+        background-color: black;
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        font-family: 'DungGeunMo', cursive, monospace;
+    }
+    .background-overlay {
+        background-image: url('{{ url_for('static', filename='arcimg/background.png') }}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        z-index: 0;
+    }
+    .frame-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    }
+    .frame-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .home-button {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        width: 130px;
+        height: auto;
+        cursor: pointer;
+        z-index: 1;
+        transition: transform 0.2s;
+    }
+    .home-button:hover { transform: scale(1.05); }
+    .back-button {
+        position: absolute;
+        top: 30px;
+        left: 180px;
+        width: 130px;
+        height: auto;
+        cursor: pointer;
+        z-index: 1;
+        transition: transform 0.2s;
+    }
+    .back-button:hover { transform: scale(1.05); }
+    .archive-intro {
+        color: white;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 100px;
+        margin-bottom: 30px;
+        font-family: 'DungGeunMo', cursive, monospace;
+        line-height: 1.5;
+    }
+    .gallery-container {
+        position: absolute;
+        top: 200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70%;
+        height: 74vh;
+        overflow-y: auto;
+        z-index: 1;
+        scrollbar-width: thin;
+        scrollbar-color: #ffffff #8f8f8f;
+    }
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        margin: 0 auto;
+    }
+    .photo-frame {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .photo-img {
+        width: 80%;
+        height: 80%;
+        object-fit: cover;
+        aspect-ratio: 1 / 1;
+        z-index: 1;
+        border-radius: 4px;
+    }
+    .frame-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.8);
+        z-index: 10000;
+    }
+    .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 50px;
+        color: white;
+        font-family: 'DungGeunMo', cursive, monospace;
+    }
+    .modal-left img {
+        max-width: 420px;
+        max-height: 420px;
+        object-fit: cover;
+        aspect-ratio: 1 / 1;
+    }
+    .modal-right {
+        max-width: 500px;
+        font-family: 'DungGeunMo', cursive, monospace;
+        word-wrap: break-word;
+    }
+    .modal-right ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .modal-right li {
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+    .modal-right li .song-title {
+        font-size: 20px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+    .modal-right li .song-info {
+        font-size: 14px;
+    }
+    #hashtags {
+        margin-top: 20px;
+        font-size: 14px;
+        font-family: 'DungGeunMo', cursive, monospace;
+    }
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 30px;
+        cursor: pointer;
+        color: white;
+    }
+</style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="frame-container">
+        <img src="{{ url_for('static', filename='arcimg/frame.png') }}" alt="frame" class="frame-img">
+    </div>
+    <a href="/home/">
+        <img src="{{ url_for('static', filename='arcimg/home.png') }}" alt="Home" class="home-button">
+    </a>
+    <a href="/recommendation">
+        <img src="{{ url_for('static', filename='arcimg/back.png') }}" alt="Back" class="back-button">
+    </a>
+    <div class="archive-intro">
+        안녕하세요! 😊<br>
+        이 공간은 사용자들이 함께 올린 사진들을 한눈에 볼 수 있는 공간입니다.<br>
+        각 사진을 클릭하면 추천 음악💿과 #해시태그가 함께 표시되며, 서로의 감성을 공유할 수 있어요.
+    </div>
+    <div class="gallery-container">
+        <div class="gallery">
+            {% for photo in photos %}
+            <div class="photo-frame"
+                 data-songs='{{ photo.songs | tojson | safe }}'
+                 data-tags='{{ photo.tags | tojson | safe }}'>
+                <img src="{{ photo.file_url }}" alt="Photo" class="photo-img">
+                <img src="{{ url_for('static', filename='arcimg/album.png') }}" alt="Frame" class="frame-overlay">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="photoModal" class="modal">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <div class="modal-left">
+                <img id="modal-photo" src="" alt="Photo">
+            </div>
+            <div class="modal-right">
+                <ul id="music-list"></ul>
+                <div id="hashtags"></div>
+            </div>
+        </div>
+    </div>
+<script>
+    const modal = document.getElementById("photoModal");
+    const modalPhoto = document.getElementById("modal-photo");
+    const musicList = document.getElementById("music-list");
+    const hashtags = document.getElementById("hashtags");
+    document.querySelectorAll('.photo-frame').forEach(frame => {
+        frame.addEventListener('click', function() {
+            const imgEl = frame.querySelector('.photo-img');
+            modalPhoto.src = imgEl.src;
+            const songs = JSON.parse(frame.dataset.songs || "[]");
+            musicList.innerHTML = "";
+            songs.forEach(song => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <span class="song-title">${song.title}</span>
+                    <span class="song-info">${song.artist}${song.genre ? " | " + song.genre : ""}</span>
+                `;
+                musicList.appendChild(li);
+            });
+            const tags = JSON.parse(frame.dataset.tags || "[]");
+            hashtags.textContent = tags.map(t => "#" + t).join(" ");
+            modal.style.display = "block";
+        });
+    });
+    document.querySelector(".close").addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+</script>
+</body>
+</html>
