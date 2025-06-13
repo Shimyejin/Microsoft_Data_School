@@ -16,7 +16,7 @@
 - SQL 기본 및 고급 쿼리문
 
 #### 2️⃣ Azure 기반 데이터 엔지니어링  
-- Azure Databricks를 활용한 대규모 데이터 병렬 처리
+- Azure Databricks를 활용한 대규모 데이터 병렬처리
 - AzureDataFactory&AzureMachineLearning을 활용한 솔루션설계
 - AzureFuction을 활용한 알람 및 경고 기능구현
 - Azure Stream Analytics를 활용한 실시간 데이터 처리  
