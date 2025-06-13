@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation</title>
+    <style>
+        @font-face {
+            font-family: 'DungGeunMo';
+            src: url('{{ url_for('static', filename='fonts/DungGeunMo.ttf') }}') format('truetype');
+        }
+        
+        body {
+            background-color: black;
+            margin: 0;
+            overflow-x: hidden;
+            height: 100vh;
+            font-family: 'DungGeunMo', cursive, monospace;
+            color: white;
+            position: relative;
+        }
+
+        .frame-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .frame-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .background-overlay {
+            background-image: url('{{ url_for('static', filename='homeimg/background.png') }}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .noticeboard-container {
+            position: absolute;
+            top: 58%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: auto;
+            z-index: 10;
+        }
+
+        .noticeboard-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 130px;
+            height: auto;
+            cursor: pointer;
+            z-index: 1;
+            transition: transform 0.2s;
+        }
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+
+        .guide-button {
+            position: absolute;
+            top: 30px;
+            left: 180px;
+            width: 130px;
+            height: auto;
+            cursor: pointer;
+            z-index: 1;
+            transition: transform 0.2s;
+        }
+        .guide-button:hover {
+            transform: scale(1.05);
+        }
+
+        .archive-button {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 130px;
+            height: auto;
+            cursor: pointer;
+            z-index: 1;
+            transition: transform 0.2s;
+        }
+        .archive-button:hover {
+            transform: scale(1.05);
+        }
+
+        .recommendation-card {
+            position: relative;
+            top: 55%;
+            left: 52%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            z-index: 20;
+        }
+
+        .unified-sound-button {
+            position: absolute;
+            top: 0px;         /* LP 상단 중앙 기준 위치 */
+            left: 90px;        /* LP 중앙 */
+            transform: translateX(-50%);
+            width: 36px;       /* 살짝 작게 */
+            height: 36px;
+            z-index: 25;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .unified-sound-button:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .image-box {
+            width: 180px;
+            height: 180px;
+            border: 2px solid black;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hashtag {
+            position: absolute;
+            bottom: 7px;
+            left: 20px;
+            color: #6e0000;
+            font-size: 16px;
+            font-family: 'DungGeunMo', cursive, monospace;
+            z-index: 25;
+            white-space: nowrap;
+            text-align: left;
+            width: 560px;
+            overflow: hidden;
+        }
+
+        .hashtag.marquee {
+            display: inline-flex;
+            animation: marquee 8s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            10% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .tag {
+            margin-right: 8px;
+        }
+
+        .text-box {
+            color: black;
+            font-family: 'DungGeunMo', cursive, monospace;
+            font-size: 20px;
+            line-height: 1.8;
+            margin-left: 20px;
+        }
+
+        .text-box .value {
+            color: #6e0000;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .album-title-value {
+            display: inline-block;
+            max-width: 260px;
+            overflow: hidden;
+            white-space: nowrap;
+            vertical-align: middle;
+            position: relative;
+        }
+        .marquee-inner {
+            display: inline-block;
+            white-space: nowrap;
+            /* width: auto가 기본! */
+            will-change: transform;
+        }
+        @keyframes marquee-move {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(calc(-1 * var(--move-distance, 0px))); }
+        }
+        .text-box .value.marquee {
+            display: inline-flex;
+            animation: marquee 6s linear infinite;
+        }
+
+        .label {
+            color: black;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 58%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 30;
+        }
+
+        .left-arrow {
+            left: calc(50% - 350px);
+        }
+
+        .right-arrow {
+            right: calc(50% - 350px);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .lp-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            transform-origin: center center;
+            animation: spin 15s linear infinite;
+        }
+
+        .album-img {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .lp-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .slide {
+            display: none;
+        }
+        .slide.active {
+            display: flex;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            padding: 20px;
+            width: 60%;
+            font-family: 'DungGeunMo', cursive, monospace;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .modal-content ol {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .modal-content ol > li {
+            margin-bottom: 12px;
+        }
+
+        .modal-content ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 6px;
+        }
+
+        .close-button {
+            color: #000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover {
+            color: red;
+        }
+
+        .no-result {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            z-index: 20;
+        }
+
+        /* 반응형 디자인 */
+       @media (max-width: 768px) {
+            .noticeboard-container {
+                width: 110vw;
+                top: 55%;
+            }
+            .noticeboard-img {
+                width: 110vw !important;
+                height: 130vw !important;
+                object-fit: cover !important;
+                display: block;
+                margin: 0 auto;
+            }
+            .recommendation-card {
+                width: 80vw !important;
+                height: 50vw !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 10px !important;
+                top: 55% !important;
+            }
+            .lp-container {
+                width: 20vw;
+                height: 20vw;
+                border-radius: 50%;
+                overflow: hidden;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: spin 15s linear infinite;
+            }
+            .album-img {
+                position: absolute;
+                top: 50%; left: 50%;
+                width: 54%; height: 54%;
+                transform: translate(-50%, -50%);
+                object-fit: cover;
+                border-radius: 50%;
+                z-index: 1;
+            }
+            .lp-img {
+                position: absolute;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                border-radius: 50%;
+                z-index: 2;
+                pointer-events: none;
+                object-fit: cover;
+            }
+            .text-box {
+                margin-left: 0;
+                font-size: 16px;
+                width: 76vw;
+                text-align: center;
+            }
+            .hashtag {
+                font-size: 14px;
+                bottom: 1vw;
+                width: 76vw;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+            }
+            .left-arrow {
+                left: calc(50% - 45vw);
+            }
+            .right-arrow {
+                right: calc(50% - 45vw);
+            }
+            .unified-sound-button {
+                top: 80%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 8vw;
+            }
+            .home-button, .guide-button, .archive-button {
+                width: 15vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .recommendation-card {
+                height: 50vw;
+            }
+            
+            .lp-container {
+                width: 40vw;
+                height: 40vw;
+            }
+            
+            .text-box {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <div class="frame-container">
+        <img src="{{ url_for('static', filename='homeimg/frame.png') }}" alt="프레임" class="frame-img">
+    </div>
+
+    <div class="noticeboard-container">
+        <img src="{{ url_for('static', filename='recimg/board.png') }}" alt="게시판" class="noticeboard-img">
+    </div>
+
+    <a href="/home/">
+        <img src="{{ url_for('static', filename='recimg/home.png') }}" alt="홈" class="home-button">
+    </a>
+
+    <img src="{{ url_for('static', filename='recimg/guide.png') }}" alt="가이드" class="guide-button" id="guide-button">
+
+    <a href="/archive/">
+        <img src="{{ url_for('static', filename='recimg/archive.png') }}" alt="아카이브" class="archive-button">
+    </a>
+    
+    {% if result and result.recommendations %}
+        {% for song in result.recommendations %}
+            <div class="recommendation-card slide">
+                <img src="{{ url_for('static', filename='recimg/soundoff.png') }}" alt="음악 재생/정지" class="unified-sound-button">
+                <div class="lp-container">
+                    <img src="{{ result.image_info.web_url }}" alt="앨범 이미지" class="album-img">
+                    <img src="{{ url_for('static', filename='recimg/lp.png') }}" alt="LP" class="lp-img">
+                </div>
+                <div class="text-box">
+                    <div class="album-title">
+                        <span class="label">곡명:</span>
+                        <span class="value album-title-value">
+                            <span class="marquee-inner">{{ song['곡명'] }}</span>
+                        </span>
+                    </div>
+                    <div class="artist">
+                        <span class="label">가수:</span>
+                        <span class="value">{{ song['가수'] }}</span>
+                    </div>
+                    <div class="genre">
+                        <span class="label">장르:</span>
+                        <span class="value">{{ song['장르'] }}</span>
+                    </div>
+                    <div class="like">
+                        <span class="label">❤유사도:</span>
+                        <span class="value">{{ "%.1f"|format(song['similarity'] * 100) }}%</span>
+                    </div>
+                </div>
+                <audio class="audio-player" src="{{ song['audio_url'] if song.get('audio_url') else '' }}" preload="none"></audio>
+                <div class="hashtag">
+                    {% set unique_tags = [] %}
+                    {% for key, value in result.tags.items() %}
+                        {% if value and value not in unique_tags %}
+                            {% set _ = unique_tags.append(value) %}
+                            <span class="tag">#{{ value }}</span>
+                        {% endif %}
+                    {% endfor %}
+                    {% for tag_field in ['상황태그', '감성태그', '스타일태그', '계절태그'] %}
+                        {% if song[tag_field] and song[tag_field] != "[]" %}
+                            {% for tag in song[tag_field]|parse_list %}
+                                {% if tag.strip() and tag.strip() not in unique_tags %}
+                                    {% set _ = unique_tags.append(tag.strip()) %}
+                                    <span class="tag">#{{ tag.strip() }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-result">
+            <p>아직 음악 추천 결과가 없습니다.</p>
+            <p>이미지를 업로드하고 장르를 선택해주세요.</p>
+        </div>
+    {% endif %}
+
+    <img src="{{ url_for('static', filename='recimg/left.png') }}" class="arrow left-arrow" alt="이전">
+    <img src="{{ url_for('static', filename='recimg/right.png') }}" class="arrow right-arrow" alt="다음">
+
+    <div id="guide-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-guide">×</span>
+            <h2>📖 사용자 안내서</h2>
+            <ol>
+                <li>
+                    <strong>총 {{ result.recommendations|length if result else 5 }}곡 추천</strong>
+                    <ul>
+                        <li>사용자가 선택한 장르 각각에서 가장 유사도가 높은 곡을 1곡씩 추천합니다.</li>
+                        <li>나머지 곡은 사용자가 선택한 장르 중에서 유사도가 높은 곡들 중 랜덤으로 선택됩니다.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>해시태그 안내</strong>
+                    <ul>
+                        <li>각 곡의 이미지에서 추출한 해시태그를 제공합니다.</li>
+                        <li>곡의 분위기와 특성을 한눈에 파악할 수 있습니다.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>음악 재생</strong>
+                    <ul>
+                        <li>
+                            <img src="{{ url_for('static', filename='recimg/soundon.png') }}" alt="재생" style="width:20px; height:20px; vertical-align:middle;">
+                            혹은
+                            <img src="{{ url_for('static', filename='recimg/soundoff.png') }}" alt="일시정지" style="width:20px; height:20px; vertical-align:middle;">
+                            버튼을 클릭하여 현재 곡을 재생하거나 일시정지할 수 있습니다.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>곡 넘기기</strong>
+                    <ul>
+                        <li>
+                            좌우에 배치된
+                            <img src="{{ url_for('static', filename='recimg/left.png') }}" alt="왼쪽" style="width:20px; height:20px; vertical-align:middle;">
+                            와
+                            <img src="{{ url_for('static', filename='recimg/right.png') }}" alt="오른쪽" style="width:20px; height:20px; vertical-align:middle;">
+                            를 클릭하여 다음 곡으로 넘길 수 있습니다.
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            const leftArrow = document.querySelector('.left-arrow');
+            const rightArrow = document.querySelector('.right-arrow');
+            let currentAudio = null;
+            let isPlaying = false;
+
+            // 슬라이드 이동 함수
+            function changeSlide(direction) {
+                pauseCurrentAudio();
+                if (direction === 'next') {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                } else {
+                    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                }
+                showSlide(currentSlide);
+            }
+
+            leftArrow.addEventListener('click', () => changeSlide('prev'));
+            rightArrow.addEventListener('click', () => changeSlide('next'));
+
+            // 가이드 모달 이벤트
+            const guideButton = document.getElementById('guide-button');
+            const guideModal = document.getElementById('guide-modal');
+            const closeGuide = document.getElementById('close-guide');
+
+            guideButton.addEventListener('click', () => {
+                guideModal.style.display = 'block';
+            });
+
+            closeGuide.addEventListener('click', () => {
+                guideModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == guideModal) {
+                    guideModal.style.display = 'none';
+                }
+            });
+
+            // 현재 오디오 정지 함수
+            function pauseCurrentAudio() {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                    currentAudio = null;
+                }
+                isPlaying = false;
+                // 모든 사운드 버튼을 soundoff로 변경
+                slides.forEach(slide => {
+                    const btn = slide.querySelector('.unified-sound-button');
+                    if (btn) {
+                        btn.src = "/static/recimg/soundoff.png";
+                    }
+                });
+            }
+
+            // 마키 효과 적용 함수
+            function applyMarquee(target, container) {
+                // 1. 초기화
+                target.classList.remove('marquee');
+                const marqueeInner = target.querySelector('.marquee-inner');
+                if (marqueeInner) {
+                    marqueeInner.style.animation = "none";
+                    marqueeInner.offsetWidth; // reflow
+                    // 길이 계산
+                    const boxWidth = target.offsetWidth;
+                    const textWidth = marqueeInner.scrollWidth;
+                    if (textWidth > boxWidth) {
+                        // 길 때만 애니메이션
+                        const distance = textWidth - boxWidth + 30;
+                        const duration = 2 + distance / 40;
+                        marqueeInner.style.animation = `marquee-move ${duration}s linear infinite`;
+                        marqueeInner.style.setProperty('--move-distance', `${distance}px`);
+                    }
+                } else if (container) {
+                    // 기존 value나 hashtag 마키 (텍스트 길이 기준)
+                    target.classList.remove('marquee');
+                    void target.offsetWidth;
+                    if (target.scrollWidth > container.clientWidth) {
+                        target.classList.add('marquee');
+                    }
+                }
+            }
+
+            function showSlide(index) {
+                if (slides.length === 0) return;
+
+                // 모든 슬라이드 숨기기
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+
+                // 현재 슬라이드의 사운드 버튼 이벤트 바인딩
+                const currentSlideElement = slides[index];
+                const unifiedSoundButton = currentSlideElement.querySelector('.unified-sound-button');
+                const audio = currentSlideElement.querySelector('.audio-player');
+
+                // 모든 사운드 버튼의 이벤트 리스너 제거
+                slides.forEach(slide => {
+                    const btn = slide.querySelector('.unified-sound-button');
+                    if (btn) {
+                        btn.replaceWith(btn.cloneNode(true));
+                    }
+                });
+
+                // 현재 슬라이드의 사운드 버튼에만 이벤트 리스너 추가
+                const newSoundButton = currentSlideElement.querySelector('.unified-sound-button');
+                if (newSoundButton) {
+                    // 초기 상태를 soundoff로 설정
+                    newSoundButton.src = "/static/recimg/soundoff.png";
+                    
+                    newSoundButton.addEventListener('click', () => {
+                        if (!audio || !audio.src) {
+                            alert('현재 곡의 오디오 파일이 없습니다.');
+                            return;
+                        }
+
+                        if (!isPlaying) {
+                            // 재생 시작
+                            audio.play().then(() => {
+                                isPlaying = true;
+                                currentAudio = audio;
+                                newSoundButton.src = "/static/recimg/soundon.png";
+                            }).catch((error) => {
+                                console.error('오디오 재생 실패:', error);
+                                alert('재생할 수 없는 URL입니다.');
+                            });
+                        } else {
+                            // 재생 중지
+                            pauseCurrentAudio();
+                        }
+                    });
+                }
+
+                // 오디오 이벤트 리스너 설정
+                if (audio) {
+                    // 기존 이벤트 리스너 제거를 위해 새로운 audio 요소로 교체
+                    const newAudio = audio.cloneNode(true);
+                    audio.parentNode.replaceChild(newAudio, audio);
+                    
+                    newAudio.addEventListener('ended', () => {
+                        isPlaying = false;
+                        currentAudio = null;
+                        if (newSoundButton) {
+                            newSoundButton.src = "/static/recimg/soundoff.png";
+                        }
+                    });
+
+                    newAudio.addEventListener('error', (e) => {
+                        console.error('오디오 로드 에러:', e);
+                        isPlaying = false;
+                        currentAudio = null;
+                        if (newSoundButton) {
+                            newSoundButton.src = "/static/recimg/soundoff.png";
+                        }
+                    });
+                }
+
+                // 마키 효과 적용
+                const albumTitleElement = currentSlideElement.querySelector('.album-title-value');
+                if (albumTitleElement) {
+                    setTimeout(() => applyMarquee(albumTitleElement), 100);
+                }
+
+                const hashtagElement = currentSlideElement.querySelector('.hashtag');
+                if (hashtagElement) {
+                    setTimeout(() => applyMarquee(hashtagElement, currentSlideElement), 100);
+                }
+            }
+
+            // 초기 설정
+            if (slides.length > 0) {
+                showSlide(currentSlide);
+            }
+
+            // 윈도우 리사이즈 이벤트
+            window.addEventListener('resize', () => {
+                if (slides.length > 0) {
+                    showSlide(currentSlide);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

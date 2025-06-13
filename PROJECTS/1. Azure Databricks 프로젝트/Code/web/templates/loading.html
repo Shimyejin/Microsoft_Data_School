@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mupic is Running...</title>
+  <style>
+    @font-face {
+      font-family: 'DungGeunMo';
+      src: url('{{ url_for('static', filename='fonts/DungGeunMo.ttf') }}') format('truetype');
+    }
+
+    body {
+      background-color: black;
+      text-align: center;
+      font-family: 'DungGeunMo', cursive, monospace;
+      color: white;
+      margin: 0;
+      overflow: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .background-overlay {
+      background-image: url('{{ url_for('static', filename='loaimg/background.png') }}');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.2;
+      z-index: 0;
+    }
+
+    .frame-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .frame-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .text-container {
+      margin-top: 300px;
+      position: relative;
+      z-index: 100;
+    }
+
+    .status-message {
+      margin: 20px 0;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 1rem;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .loading-dots::after {
+      content: '';
+      animation: dots 1.5s infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: ''; }
+      40% { content: '.'; }
+      60% { content: '..'; }
+      80%, 100% { content: '...'; }
+    }
+
+    .flying-bird {
+      position: fixed;
+      width: 100px;
+      height: 100px;
+      z-index: 60;
+      top: 100px;
+      left: 100px;
+      transform: scaleX(1);
+      pointer-events: none;
+      transition: transform 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-overlay"></div>
+  <div class="frame-container">
+    <img src="{{ url_for('static', filename='loaimg/frame.png') }}" alt="frame" class="frame-img" />
+  </div>
+
+  <!-- 귀여운 새 -->
+  <img src="{{ url_for('static', filename='loaimg/bird.gif') }}" alt="flying bird" class="flying-bird" id="bird" />
+
+  <div class="text-container">
+    <h2>분석 중<span class="loading-dots"></span>🎶</h2>
+    <h4 class="status-message" id="statusText">AI가 이미지를 분석하고 있어요...</h4>
+    <div id="errorMessage" class="error-message" style="display: none;"></div>
+  </div>
+
+  <script>
+    const statusMessages = [
+      "이미지에서 감정과 분위기를 파악하고 있습니다",
+      "이미지를 분석하여 태그를 추출하고 있습니다",
+      "태그 기반 장르별 추천 곡을 선별하고 있습니다",
+      "YouTube에서 음악을 검색하고 있습니다",
+      "최종 플레이리스트를 생성하고 있습니다"
+    ];
+
+    let currentMessageIndex = 0;
+    let messageInterval;
+
+    function updateStatusMessage() {
+      const statusElement = document.getElementById("statusText");
+      statusElement.textContent = statusMessages[currentMessageIndex];
+      if (currentMessageIndex === statusMessages.length - 1) {
+        setTimeout(() => {
+          currentMessageIndex = 0;
+        }, 60000);
+      } else {
+        currentMessageIndex = (currentMessageIndex + 1) % statusMessages.length;
+      }
+    }
+
+    window.onload = () => {
+      messageInterval = setInterval(updateStatusMessage, 9000);
+
+      startFlyingBird();
+
+      fetch("/process_recommendation", {
+        credentials: "include"
+      })
+        .then(res => res.json())
+        .then(data => {
+          clearInterval(messageInterval);
+          if (data.success) {
+            window.location.href = "/recommendation";
+          } else {
+            showError("추천 처리 실패: " + (data.message || '알 수 없는 오류'));
+          }
+        })
+        .catch(() => {
+          clearInterval(messageInterval);
+          showError("서버와의 연결 중 문제가 발생했습니다.");
+        });
+    };
+
+    function showError(msg) {
+      clearInterval(messageInterval);
+      const errorBox = document.getElementById("errorMessage");
+      const statusText = document.getElementById("statusText");
+      errorBox.textContent = msg;
+      errorBox.style.display = "block";
+      statusText.textContent = "⚠️ 오류 발생 - 홈으로 이동 중...";
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 3000);
+    }
+
+    // 🐦 새 곡선 비행 로직
+function startFlyingBird() {
+  const bird = document.getElementById("bird");
+  const speed = 2.5;
+  let posX = 100;
+  let posY = 100;
+  let directionX = 1;
+  let angle = 0;
+
+  // 랜덤한 수직 드리프트 값 설정
+  let verticalDrift = Math.random() * 100 + 50; // 50~150 사이
+
+  setInterval(() => {
+    const birdWidth = bird.offsetWidth;
+    const birdHeight = bird.offsetHeight;
+    const maxX = window.innerWidth - birdWidth;
+    const maxY = window.innerHeight - birdHeight;
+
+    angle += 0.04;
+
+    // 기본 곡선 + 천천히 이동하는 중심 y축
+    posX += directionX * speed;
+    posY = 200 + Math.sin(angle) * 80 + Math.sin(angle * 0.5) * verticalDrift;
+
+    // 화면 경계 반전
+    if (posX <= 0 || posX >= maxX) {
+      directionX *= -1;
+      bird.style.transform = `scaleX(${directionX > 0 ? 1 : -1})`;
+
+      // 방향 바뀔 때마다 랜덤으로 드리프트도 변경
+      verticalDrift = Math.random() * 100 + 50;
+    }
+
+    // 상하 제한
+    if (posY < 0) posY = 0;
+    if (posY > maxY) posY = maxY;
+
+    bird.style.left = `${posX}px`;
+    bird.style.top = `${posY}px`;
+  }, 16); // 60FPS
+}
+
+  </script>
+</body>
+</html>
