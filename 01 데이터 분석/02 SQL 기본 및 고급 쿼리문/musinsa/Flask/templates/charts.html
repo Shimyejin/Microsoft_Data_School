@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Analytics Splash{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6">📊 Analytics Splash</h2>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+  <!-- 평균 할인율 -->
+  <div style="background: #f7f7f7; padding: 1rem; border-radius: 8px;">
+    <h3 class="text-xl mb-2 font-semibold">브랜드별 평균 할인율</h3>
+    <canvas id="discountChart" height="200"></canvas>
+  </div>
+
+  <!-- 구간별 리뷰 수 -->
+  <div style="background: #f7f7f7; padding: 1rem; border-radius: 8px;">
+    <h3 class="text-xl mb-2 font-semibold">할인율 구간별 평균 리뷰 수</h3>
+    <canvas id="reviewChart" height="200"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const discountData = {{ discount_data | tojson }};
+  const reviewByDiscount = {{ review_by_discount | tojson }};
+
+  const brandNames = discountData.map(d => d.brand_name);
+  const discountRates = discountData.map(d => parseFloat(d.avg_discount));
+
+  const buckets = reviewByDiscount.map(d => `${(d.bucket - 1)*10}~${d.bucket*10}%`);
+  const reviewCounts = reviewByDiscount.map(d => parseFloat(d.avg_review));
+
+  new Chart(document.getElementById('discountChart'), {
+    type: 'bar',
+    data: {
+      labels: brandNames,
+      datasets: [{
+        label: '평균 할인율 (%)',
+        data: discountRates,
+        backgroundColor: 'rgba(54, 162, 235, 0.6)'
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  new Chart(document.getElementById('reviewChart'), {
+    type: 'bar',
+    data: {
+      labels: buckets,
+      datasets: [{
+        label: '평균 리뷰 수',
+        data: reviewCounts,
+        backgroundColor: 'rgba(255, 99, 132, 0.6)'
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+</script>
+{% endblock %}
