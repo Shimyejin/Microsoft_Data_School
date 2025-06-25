@@ -1,0 +1,686 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>매핑 데이터 플로우(Mapping Data Flow, MDF)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="218af5cf-afc2-8070-b8e2-d62879cee141" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="https://www.notion.so/icons/description_gray.svg"/></div><h1 class="page-title">매핑 데이터 플로우(Mapping Data Flow, MDF)</h1><p class="page-description"></p></header><div class="page-body"><ul id="218af5cf-afc2-80b1-9e48-f984c9b92111" class="bulleted-list"><li style="list-style-type:disc">코드 없이 시각적으로 ETL(데이터 추출, 변환, 적재) 변환을 설계할 수 있는 기능</li></ul><ul id="218af5cf-afc2-80e5-a0f7-e096f5386677" class="bulleted-list"><li style="list-style-type:disc">ADF 내에서 GUI로 구성하고 Spark 엔진으로 실행</li></ul><ul id="218af5cf-afc2-803d-8b65-c8370aafb577" class="bulleted-list"><li style="list-style-type:disc">특징<ul id="218af5cf-afc2-8079-bb52-e067a8449caf" class="bulleted-list"><li style="list-style-type:circle">GUI 기반 데이터 변환 설계 (코딩 불필요)</li></ul><ul id="218af5cf-afc2-8030-9f8b-c494c9c181c4" class="bulleted-list"><li style="list-style-type:circle">대용량 병렬 처리 (Spark 기반)</li></ul><ul id="218af5cf-afc2-8028-b7f7-f4f32cc3cebd" class="bulleted-list"><li style="list-style-type:circle">ADF 파이프라인 내 Activity로 사용 가능</li></ul></li></ul><ul id="218af5cf-afc2-8089-8042-c1ae2db9278b" class="bulleted-list"><li style="list-style-type:disc">활용 예시<ul id="218af5cf-afc2-8036-a9f0-cd9b159082b9" class="bulleted-list"><li style="list-style-type:circle">원시 데이터 정제</li></ul><ul id="218af5cf-afc2-80b5-8974-d9f28d311342" class="bulleted-list"><li style="list-style-type:circle">로그 분석 전처리</li></ul><ul id="218af5cf-afc2-80d8-9bfb-fb71dd8e2d9a" class="bulleted-list"><li style="list-style-type:circle">DWH 적재 전 변환</li></ul></li></ul><ul id="218af5cf-afc2-8070-8900-d9d57f4c4204" class="bulleted-list"><li style="list-style-type:disc">주요 구성 요소<table id="218af5cf-afc2-80b4-a5c6-cefec03583aa" class="simple-table"><thead class="simple-table-header"><tr id="218af5cf-afc2-808a-b8bb-dcc1ed39a7af"><th id="Pe&lt;;" class="simple-table-header-color simple-table-header">구성 요소</th><th id="M~WC" class="simple-table-header-color simple-table-header">설명</th></tr></thead><tbody><tr id="218af5cf-afc2-80ef-ab2b-fc35fc533f4a"><td id="Pe&lt;;" class=""><strong>Source</strong></td><td id="M~WC" class="">데이터 입력 (Blob, SQL 등)</td></tr><tr id="218af5cf-afc2-8060-bff5-d4409cd65ef7"><td id="Pe&lt;;" class=""><strong>Transformation</strong></td><td id="M~WC" class="">데이터 변환 로직 적용</td></tr><tr id="218af5cf-afc2-80bc-9932-c094c55ea2b5"><td id="Pe&lt;;" class=""><strong>Sink</strong></td><td id="M~WC" class="">데이터 저장 (Blob, SQL 등)</td></tr></tbody></table></li></ul><ul id="218af5cf-afc2-8058-bfdc-cef4a6d9df1e" class="bulleted-list"><li style="list-style-type:disc">주요 변환 기능<table id="218af5cf-afc2-804b-b379-ccf8a926168d" class="simple-table"><thead class="simple-table-header"><tr id="218af5cf-afc2-80c4-acd8-e1e1cf8c15b7"><th id="@Byc" class="simple-table-header-color simple-table-header">기능</th><th id="N?cB" class="simple-table-header-color simple-table-header">설명</th><th id="zin[" class="simple-table-header-color simple-table-header">예시</th></tr></thead><tbody><tr id="218af5cf-afc2-8043-a16d-d19625387a6d"><td id="@Byc" class=""><strong>Select</strong></td><td id="N?cB" class="">컬럼 선택 및 이름 변경</td><td id="zin[" class="">필요한 열만 추출</td></tr><tr id="218af5cf-afc2-8071-b3f5-db0489d4ead8"><td id="@Byc" class=""><strong>Filter</strong></td><td id="N?cB" class="">조건으로 행 필터링</td><td id="zin[" class="">오류 로그만 추출</td></tr><tr id="218af5cf-afc2-8017-9a29-fee7d32f0d09"><td id="@Byc" class=""><strong>Join</strong></td><td id="N?cB" class="">다른 스트림과 조인</td><td id="zin[" class="">사용자 정보 병합</td></tr><tr id="218af5cf-afc2-805f-89a2-d301abf5a9b3"><td id="@Byc" class=""><strong>Aggregate</strong></td><td id="N?cB" class="">그룹화 및 집계</td><td id="zin[" class="">과목별 평균 계산</td></tr><tr id="218af5cf-afc2-809c-bf5d-f66a8034ff87"><td id="@Byc" class=""><strong>Derived Column</strong></td><td id="N?cB" class="">계산 컬럼 생성</td><td id="zin[" class="">평균, 등급 파생</td></tr><tr id="218af5cf-afc2-807c-9d3d-e1d6d9749f2c"><td id="@Byc" class=""><strong>Sort</strong></td><td id="N?cB" class="">정렬 수행</td><td id="zin[" class="">성적순 정렬</td></tr><tr id="218af5cf-afc2-8085-b0d0-e1e060c95925"><td id="@Byc" class=""><strong>Pivot</strong></td><td id="N?cB" class="">열을 행으로 변환</td><td id="zin[" class="">카테고리 분석</td></tr></tbody></table></li></ul><ul id="218af5cf-afc2-8090-8e96-e2003b4ffb92" class="bulleted-list"><li style="list-style-type:disc">흐름 제어 기능<ul id="218af5cf-afc2-80ec-af5f-c74c8e60b871" class="bulleted-list"><li style="list-style-type:circle"><strong>Conditional Split</strong>: 조건 분기 (예: 나이별 분류)</li></ul><ul id="218af5cf-afc2-8097-ab65-d282795a84e1" class="bulleted-list"><li style="list-style-type:circle"><strong>Exists / Lookup</strong>: 외부 참조 존재 여부 판단</li></ul></li></ul><p id="218af5cf-afc2-8095-9b15-ea8f7ffe3c7f" class="">
+</p><h3 id="218af5cf-afc2-802c-b55c-c852594bf902" class="">⚙️ MDF 실행 방식</h3><ul id="218af5cf-afc2-8053-a8ef-c44cd483b766" class="bulleted-list"><li style="list-style-type:disc">실행 흐름<ul id="218af5cf-afc2-8017-84c0-c6c17bd998bc" class="bulleted-list"><li style="list-style-type:circle">ADF 파이프라인 내 <strong>Data Flow Activity</strong>로 호출</li></ul><ul id="218af5cf-afc2-80c9-8a0d-f68485be0ba3" class="bulleted-list"><li style="list-style-type:circle">*Integration Runtime(IR)**에서 Spark 클러스터 자동 생성/종료</li></ul></li></ul><ul id="218af5cf-afc2-801b-909a-c705cbc17ea7" class="bulleted-list"><li style="list-style-type:disc">디버그 모드<ul id="218af5cf-afc2-802d-b993-e53bf894e6da" class="bulleted-list"><li style="list-style-type:circle">Sample 데이터 기반 결과 시각 확인</li></ul><ul id="218af5cf-afc2-80ae-97f4-f3e40d792fc5" class="bulleted-list"><li style="list-style-type:circle">실시간 컬럼 파생, 오류 점검 가능</li></ul></li></ul><p id="218af5cf-afc2-803f-a368-f775085ea14e" class="">
+</p><h3 id="218af5cf-afc2-8002-bef0-e5f130f494b4" class="">🧪 실습 예시 흐름</h3><ol type="1" id="218af5cf-afc2-80b5-a31d-c59a4d826417" class="numbered-list" start="1"><li>데이터 준비<ul id="218af5cf-afc2-80c3-8864-f1fcd420ad24" class="bulleted-list"><li style="list-style-type:disc">Kaggle: Student Performance in Exams</li></ul><ul id="218af5cf-afc2-8038-9c57-c7c1444a5237" class="bulleted-list"><li style="list-style-type:disc">Blob Storage의 <code>input</code>, <code>output</code> 컨테이너 사용</li></ul></li></ol><ol type="1" id="218af5cf-afc2-80b9-9c64-fad060dfc5b3" class="numbered-list" start="2"><li>MDF 생성<ul id="218af5cf-afc2-809e-9184-cf3fa4cf2a56" class="bulleted-list"><li style="list-style-type:disc">Source 설정 → 파생 컬럼(평균, 등급) → Sink 저장</li></ul></li></ol><ol type="1" id="218af5cf-afc2-805d-9e9e-c8ec54b0c001" class="numbered-list" start="3"><li>파이프라인 생성 및 실행<ul id="218af5cf-afc2-80ab-af1d-cf78ca20d8ea" class="bulleted-list"><li style="list-style-type:disc">MDF를 포함한 파이프라인 구성 및 실행</li></ul></li></ol><ol type="1" id="218af5cf-afc2-8073-8c76-de43a0576978" class="numbered-list" start="4"><li>디버깅 및 결과 확인<ul id="218af5cf-afc2-80e5-8f7b-d47a7a73e643" class="bulleted-list"><li style="list-style-type:disc">실시간 결과 확인 후 배포 가능</li></ul></li></ol><h3 id="218af5cf-afc2-8033-9670-e7a33cb5397b" class="">📌 <strong>[비교]</strong> Pipeline vs Mapping Data Flow</h3><table id="218af5cf-afc2-8012-af6d-c1a4169b63ab" class="simple-table"><thead class="simple-table-header"><tr id="218af5cf-afc2-806c-be44-c4e82fc5da25"><th id="yd=^" class="simple-table-header-color simple-table-header">항목</th><th id="[Ap@" class="simple-table-header-color simple-table-header">Pipeline</th><th id="AxhT" class="simple-table-header-color simple-table-header">MDF</th></tr></thead><tbody><tr id="218af5cf-afc2-80ea-b6a4-f798356b7027"><td id="yd=^" class="">역할</td><td id="[Ap@" class="">흐름 제어</td><td id="AxhT" class="">데이터 변환</td></tr><tr id="218af5cf-afc2-8034-9e22-e7a5eead5468"><td id="yd=^" class="">실행 방식</td><td id="[Ap@" class="">Copy/Trigger 등 통합관리</td><td id="AxhT" class="">Spark 기반 변환 실행</td></tr><tr id="218af5cf-afc2-80ad-920d-d22f1d2efe61"><td id="yd=^" class="">디버깅</td><td id="[Ap@" class="">전체 흐름 단위</td><td id="AxhT" class="">샘플 데이터 기반</td></tr></tbody></table><p id="218af5cf-afc2-805b-b86e-ec8c6afd36e0" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

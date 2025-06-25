@@ -1,0 +1,693 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Azure Functions 실습</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="21caf5cf-afc2-8082-9e47-d4df045c76f3" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="https://www.notion.so/icons/description_gray.svg"/></div><h1 class="page-title">Azure Functions 실습</h1><p class="page-description"></p></header><div class="page-body"><h3 id="21caf5cf-afc2-8029-abc8-c90a211ace90" class="">✅ 1. 실습 개요</h3><ul id="21caf5cf-afc2-8012-8c89-d4ecca7b3ba5" class="bulleted-list"><li style="list-style-type:disc"><strong>실습 목표</strong><p id="21caf5cf-afc2-80af-8bb1-c4344dc8e17b" class="">Python과 VS Code를 이용하여 Azure Functions 앱을 로컬 및 클라우드 환경에서 직접 구축하고 배포 및 테스트하는 전체 과정을 실습한다.</p></li></ul><ul id="21caf5cf-afc2-80bf-b174-d43855747e35" class="bulleted-list"><li style="list-style-type:disc"><strong>주요 단계</strong><ol type="1" id="21caf5cf-afc2-803a-96dd-f6951e9be70e" class="numbered-list" start="1"><li>VS Code를 이용해 Functions 프로젝트 생성</li></ol><ol type="1" id="21caf5cf-afc2-8013-b13a-c3b6dfcb77f1" class="numbered-list" start="2"><li>로컬 환경에서 함수 테스트</li></ol><ol type="1" id="21caf5cf-afc2-80e0-b2dc-e0019c600107" class="numbered-list" start="3"><li>Azure에 함수 앱 생성</li></ol><ol type="1" id="21caf5cf-afc2-80ac-9855-cd4d16eb96c0" class="numbered-list" start="4"><li>로컬 코드를 Azure에 배포</li></ol><ol type="1" id="21caf5cf-afc2-80bd-b3e0-e1bc5c913013" class="numbered-list" start="5"><li>배포된 함수 테스트</li></ol><ol type="1" id="21caf5cf-afc2-804c-b2a2-f7eddb2f8ef0" class="numbered-list" start="6"><li>리소스 정리</li></ol></li></ul><hr id="21caf5cf-afc2-80d9-90fd-edc4558bd26a"/><h3 id="21caf5cf-afc2-8077-ae3c-f0e80c87ca4a" class="">✅ 2. 로컬 Azure Functions 프로젝트 생성</h3><ol type="1" id="21caf5cf-afc2-805e-8d88-de58f2f0e156" class="numbered-list" start="1"><li>VS Code 실행 후 <code>F1</code> 키 입력 → 명령 팔레트 열기</li></ol><ol type="1" id="21caf5cf-afc2-8024-ae04-eecf074cfb95" class="numbered-list" start="2"><li>명령어 입력: <code>Azure Functions: Create New Project</code></li></ol><ol type="1" id="21caf5cf-afc2-8048-a73b-d9dd85dcfbe6" class="numbered-list" start="3"><li>폴더 생성 및 선택 (예: <code>azfunc-demo</code>)</li></ol><ol type="1" id="21caf5cf-afc2-807c-9199-c9dc9d258d3c" class="numbered-list" start="4"><li>설정값 입력:<ul id="21caf5cf-afc2-80da-951e-f512f339dcfe" class="bulleted-list"><li style="list-style-type:disc">언어: Python</li></ul><ul id="21caf5cf-afc2-80ea-9248-fdc19550404f" class="bulleted-list"><li style="list-style-type:disc">모델: Model V2</li></ul><ul id="21caf5cf-afc2-8067-90b2-ead1f6cdd5aa" class="bulleted-list"><li style="list-style-type:disc">Python 인터프리터: Skip virtual environment</li></ul><ul id="21caf5cf-afc2-80a9-9b51-cdd8e024ddd0" class="bulleted-list"><li style="list-style-type:disc">템플릿: HTTP Trigger</li></ul><ul id="21caf5cf-afc2-8028-a194-fa1674f8637c" class="bulleted-list"><li style="list-style-type:disc">함수 이름: <code>http_trigger</code></li></ul><ul id="21caf5cf-afc2-80d1-9df8-d3b83f747f07" class="bulleted-list"><li style="list-style-type:disc">권한 수준: <code>Anonymous</code></li></ul></li></ol><ol type="1" id="21caf5cf-afc2-8038-92c4-e189a1000c62" class="numbered-list" start="5"><li>“Open in current window” 클릭하여 프로젝트 열기</li></ol><hr id="21caf5cf-afc2-80c9-9902-fc57c9cf39e5"/><h3 id="21caf5cf-afc2-8032-b53f-edd7876327e8" class="">✅ 3. AzureWebJobsStorage 설정 변경</h3><p id="21caf5cf-afc2-805f-97aa-c5d5e9fb1f4f" class=""><code>local.settings.json</code> 파일에서 다음과 같이 수정</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-80f1-81f8-c82abd5d0472" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;IsEncrypted&quot;: false,
+  &quot;Values&quot;: {
+    &quot;AzureWebJobsStorage&quot;: &quot;UseDevelopmentStorage=true&quot;,
+    &quot;FUNCTIONS_WORKER_RUNTIME&quot;: &quot;python&quot;
+  }
+}</code></pre><hr id="21caf5cf-afc2-8024-bc59-e22006b8713e"/><h3 id="21caf5cf-afc2-803b-8a03-c065eb460d1f" class="">✅ 4. Azurite 에뮬레이터 실행</h3><ol type="1" id="21caf5cf-afc2-80d9-b4f2-eaa72598e0e7" class="numbered-list" start="1"><li>VS Code에서 <code>F1</code> → <code>Azurite: Start</code> 명령 실행</li></ol><ol type="1" id="21caf5cf-afc2-809d-a5cf-d0b1e58c55f4" class="numbered-list" start="2"><li>우측 하단에 Azurite 실행 상태 확인</li></ol><hr id="21caf5cf-afc2-8030-9fb7-c815cb27f4aa"/><h3 id="21caf5cf-afc2-807a-ab2f-ed0bef70e856" class="">✅ 5. 로컬에서 Azure Functions 실행</h3><ol type="1" id="21caf5cf-afc2-8057-975a-f394d035bc74" class="numbered-list" start="1"><li><code>F5</code> 키 또는 “실행 및 디버깅” 아이콘 클릭</li></ol><ol type="1" id="21caf5cf-afc2-8007-b78b-cfe887e04b03" class="numbered-list" start="2"><li>터미널에서 로컬 서버 구동 확인</li></ol><ol type="1" id="21caf5cf-afc2-8082-941f-fcdca5a980ba" class="numbered-list" start="3"><li>출력 예시:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-8061-a186-f0ce2bad5c58" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">http://localhost:7071/api/http_trigger</code></pre></li></ol><hr id="21caf5cf-afc2-8017-803b-fbe63ecc36d0"/><h3 id="21caf5cf-afc2-800f-b8ab-f9c7ae352225" class="">✅ 6. VS Code에서 함수 테스트 (Azure 확장 기능 활용)</h3><ol type="1" id="21caf5cf-afc2-8049-94fb-fbc62a5cea1b" class="numbered-list" start="1"><li>좌측 메뉴에서 Azure 아이콘 클릭</li></ol><ol type="1" id="21caf5cf-afc2-802b-8db2-cdd11ba80788" class="numbered-list" start="2"><li><code>Local Project &gt; Functions</code> 하위의 <code>http_trigger</code>에서 마우스 오른쪽 클릭</li></ol><ol type="1" id="21caf5cf-afc2-804f-86c2-cd0b39fc0354" class="numbered-list" start="3"><li><code>Execute Function Now</code> 클릭</li></ol><ol type="1" id="21caf5cf-afc2-8025-b242-c68ef0feb5a5" class="numbered-list" start="4"><li>요청 본문에 아래 입력:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-80af-8862-c16d0d97a7be" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;name&quot;: &quot;Azure&quot;
+}</code></pre></li></ol><ol type="1" id="21caf5cf-afc2-806d-8de8-f03a33f60225" class="numbered-list" start="5"><li>하단 출력창에서 실행 결과 확인</li></ol><hr id="21caf5cf-afc2-80d7-8140-c745171728da"/><h3 id="21caf5cf-afc2-8077-af21-e9d49fbd9ff9" class="">✅ 7. 웹 브라우저에서 함수 테스트</h3><ol type="1" id="21caf5cf-afc2-80aa-9282-ff69d86fe5a5" class="numbered-list" start="1"><li>웹 브라우저 주소창에 입력:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-80e6-bc7d-e99feca6a8ef" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">http://localhost:7071/api/http_trigger?name=azure</code></pre></li></ol><ol type="1" id="21caf5cf-afc2-80db-a260-f4b5d615b648" class="numbered-list" start="2"><li>출력 메시지 확인:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-8061-a63a-e11810810dfd" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Hello, azure.</code></pre></li></ol><hr id="21caf5cf-afc2-8087-8040-dea839dc8490"/><h3 id="21caf5cf-afc2-8021-bd41-f27d397818e8" class="">✅ 8. Azure 로그인 및 클라우드 환경 준비</h3><ol type="1" id="21caf5cf-afc2-807e-9250-e83f0d40c1b9" class="numbered-list" start="1"><li>VS Code 좌측 Azure 아이콘 클릭</li></ol><ol type="1" id="21caf5cf-afc2-80e8-962a-d475d279d0e1" class="numbered-list" start="2"><li><code>Sign in to Azure</code> 클릭 → 브라우저에서 로그인</li></ol><ol type="1" id="21caf5cf-afc2-8027-9355-efbd974d3f1b" class="numbered-list" start="3"><li>구독 활성화 여부 확인</li></ol><hr id="21caf5cf-afc2-8098-8ecd-c920c2ea4237"/><h3 id="21caf5cf-afc2-805c-a075-cd810cbd3aed" class="">✅ 9. Azure에 Function App 생성</h3><ol type="1" id="21caf5cf-afc2-8051-91c9-f07cc991994d" class="numbered-list" start="1"><li><code>F1</code> → <code>Azure Functions: Create Function App in Azure</code> 입력</li></ol><ol type="1" id="21caf5cf-afc2-802d-b0ac-c52c4a4f9698" class="numbered-list" start="2"><li>설정값 입력:<ul id="21caf5cf-afc2-8096-93ad-fc9cadac4b60" class="bulleted-list"><li style="list-style-type:disc">앱 이름: 고유한 이름 (예: <code>el31-unique-az-fnc</code>)</li></ul><ul id="21caf5cf-afc2-806b-bcc9-d3d692d7bcec" class="bulleted-list"><li style="list-style-type:disc">런타임: Python 3.11</li></ul><ul id="21caf5cf-afc2-80a0-aa77-ea60299f01c9" class="bulleted-list"><li style="list-style-type:disc">리전: East US</li></ul></li></ol><hr id="21caf5cf-afc2-8092-b99b-ee281ae60603"/><h3 id="21caf5cf-afc2-80f7-aae3-fc3b9c0dd9b4" class="">✅ 10. 로컬 함수 앱을 Azure에 배포</h3><ol type="1" id="21caf5cf-afc2-803b-b4c5-c09808c515a2" class="numbered-list" start="1"><li><code>F1</code> → <code>Azure Functions: Deploy to Function App</code> 입력</li></ol><ol type="1" id="21caf5cf-afc2-8075-a6b8-d72af025e1e9" class="numbered-list" start="2"><li>이전 단계에서 만든 함수 앱 선택</li></ol><ol type="1" id="21caf5cf-afc2-8023-b20b-c91ac1f27a5d" class="numbered-list" start="3"><li>배포 상태 메시지 확인 후 완료 여부 체크</li></ol><hr id="21caf5cf-afc2-8051-a9bb-f8ecbf4edd62"/><h3 id="21caf5cf-afc2-80ba-b1f6-c897a4bab9c3" class="">✅ 11. 배포한 함수 앱 테스트 (Azure 상에서)</h3><ol type="1" id="21caf5cf-afc2-80d0-814c-de5062aa54ca" class="numbered-list" start="1"><li><code>F1</code> → <code>Azure Functions: Execute Function Now</code> 입력</li></ol><ol type="1" id="21caf5cf-afc2-8099-bb3b-eca69003423d" class="numbered-list" start="2"><li>배포한 함수 앱 → <code>http_trigger</code> 함수 선택</li></ol><ol type="1" id="21caf5cf-afc2-8075-b247-cda86d9d5f51" class="numbered-list" start="3"><li>요청 본문 입력:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-80f7-9100-dba0627ccfb7" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;name&quot;: &quot;Azure&quot;
+}</code></pre></li></ol><ol type="1" id="21caf5cf-afc2-80e8-a420-e1694f9f138c" class="numbered-list" start="4"><li>결과 응답 확인</li></ol><hr id="21caf5cf-afc2-804c-93ab-cddd62ea61e2"/><h3 id="21caf5cf-afc2-8069-85c3-c5b3f275f0f2" class="">✅ 12. 불필요한 리소스 삭제</h3><ol type="1" id="21caf5cf-afc2-8015-98f0-f143c88d064d" class="numbered-list" start="1"><li>Azure Portal 접속</li></ol><ol type="1" id="21caf5cf-afc2-805e-92a5-fe18800d8e31" class="numbered-list" start="2"><li>좌측 탐색창에서 <code>리소스 그룹</code> 클릭</li></ol><ol type="1" id="21caf5cf-afc2-8011-a7c2-e2624fbe55c5" class="numbered-list" start="3"><li>실습에서 생성한 리소스 그룹 이름 검색 (예: <code>el31unique</code>)</li></ol><ol type="1" id="21caf5cf-afc2-80f5-a08a-c7c501db4548" class="numbered-list" start="4"><li>리소스 그룹 선택 → 삭제 버튼 클릭</li></ol><ol type="1" id="21caf5cf-afc2-80f7-8729-e226916c9cc6" class="numbered-list" start="5"><li>리소스 그룹 이름 입력 → 최종 삭제</li></ol><hr id="21caf5cf-afc2-8033-ac85-ce05efec4939"/><h3 id="21caf5cf-afc2-8068-9af4-ef6bffa19039" class="">✅ 13. 실습 요약</h3><ul id="21caf5cf-afc2-80c8-aecf-d19bc6cf77ed" class="bulleted-list"><li style="list-style-type:disc">Azure Functions를 VS Code에서 <strong>로컬 생성 → 테스트 → 클라우드 배포 → 원격 테스트</strong>까지 전 과정을 경험</li></ul><ul id="21caf5cf-afc2-803a-8513-e656ec890ad7" class="bulleted-list"><li style="list-style-type:disc">Azurite로 로컬 환경에서 에뮬레이션 가능</li></ul><ul id="21caf5cf-afc2-8062-88e1-f44075ec9279" class="bulleted-list"><li style="list-style-type:disc">실시간으로 함수의 입력/출력을 확인하고 수정 가능</li></ul><ul id="21caf5cf-afc2-8084-b142-df3bb764d597" class="bulleted-list"><li style="list-style-type:disc">최종적으로 Azure Portal에서 리소스를 관리하며 정리까지 수행</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

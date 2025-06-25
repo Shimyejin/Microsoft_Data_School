@@ -1,0 +1,702 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Azure Event Hubs</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="21caf5cf-afc2-80de-a3fb-c1d23706959e" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="https://www.notion.so/icons/description_gray.svg"/></div><h1 class="page-title">Azure Event Hubs</h1><p class="page-description"></p></header><div class="page-body"><h3 id="21caf5cf-afc2-800e-a84b-d31c63b5d842" class="">✅ 1. Azure Event Hubs란?</h3><ul id="21caf5cf-afc2-8009-810a-e78bcc792e6b" class="bulleted-list"><li style="list-style-type:disc">Azure Event Hubs는 <strong>확장성 높은 실시간 데이터 스트리밍 플랫폼이자 이벤트 수집 서비스</strong>로, 다양한 소스에서 발생하는 대량의 데이터를 실시간으로 수집하고 처리할 수 있음</li></ul><ul id="21caf5cf-afc2-80e7-aeac-c3febbe05038" class="bulleted-list"><li style="list-style-type:disc">주요 특징:<ul id="21caf5cf-afc2-8054-839c-d0d156f9c015" class="bulleted-list"><li style="list-style-type:circle">실시간 대량 데이터 수집 및 처리</li></ul><ul id="21caf5cf-afc2-8042-bb60-ea8d46965b13" class="bulleted-list"><li style="list-style-type:circle">다양한 소스 (IoT 센서, 웹, 앱 등) 연동 가능</li></ul><ul id="21caf5cf-afc2-804e-90d3-f61738424148" class="bulleted-list"><li style="list-style-type:circle">실시간 분석, 대시보드 구축, 트랜잭션 처리 등 가능</li></ul><ul id="21caf5cf-afc2-80ae-9f71-e80c9d5567aa" class="bulleted-list"><li style="list-style-type:circle"><strong>Apache Kafka 호환</strong>으로 손쉬운 마이그레이션 가능</li></ul></li></ul><hr id="21caf5cf-afc2-808b-b7f4-c918d938daf4"/><h3 id="21caf5cf-afc2-800a-a2e3-f19c1c842ceb" class="">✅ 2. Azure Event Hubs 아키텍처</h3><table id="21caf5cf-afc2-8004-8c24-e8160a5187d1" class="simple-table"><tbody><tr id="21caf5cf-afc2-80b2-a357-d28310b6ae21"><td id="?WCZ" class="">구성 요소</td><td id="P=~n" class="">설명</td></tr><tr id="21caf5cf-afc2-8037-bf41-d8dd8fb41ec0"><td id="?WCZ" class="">이벤트 생산자 (Producers)</td><td id="P=~n" class="">데이터를 생성하여 Event Hub로 전송하는 주체 (예: IoT 센서)</td></tr><tr id="21caf5cf-afc2-80d8-a468-d5de949d7cef"><td id="?WCZ" class="">이벤트 허브 (Event Hub)</td><td id="P=~n" class="">생산자로부터 이벤트 수신 → 일시 저장 및 관리</td></tr><tr id="21caf5cf-afc2-800b-86d6-fd545a73dac7"><td id="?WCZ" class="">이벤트 소비자 (Consumers)</td><td id="P=~n" class="">Event Hub에서 데이터를 읽어와 처리하는 주체 (예: Stream Analytics)</td></tr></tbody></table><hr id="21caf5cf-afc2-80cf-ae19-d9ce4d90a7a4"/><h3 id="21caf5cf-afc2-80d6-bd8c-f41d7af31005" class="">✅ 3. Kafka 호환 기능</h3><ul id="21caf5cf-afc2-80b1-b76a-e0f7e0d7b8c9" class="bulleted-list"><li style="list-style-type:disc"><strong>Kafka</strong>는 대용량 실시간 데이터 피드를 처리할 수 있는 오픈 소스 스트리밍 플랫폼</li></ul><ul id="21caf5cf-afc2-8042-a9e2-dd9f55c9d956" class="bulleted-list"><li style="list-style-type:disc">Event Hubs는 Kafka 프로토콜 완벽 지원</li></ul><ul id="21caf5cf-afc2-80b1-a061-e1db122067a5" class="bulleted-list"><li style="list-style-type:disc">기존 Kafka 코드를 수정하지 않고도 Event Hubs로 마이그레이션 가능</li></ul><ul id="21caf5cf-afc2-805e-ac6a-dc24c1e282fa" class="bulleted-list"><li style="list-style-type:disc">Kafka 대신 Event Hubs 사용 시 이점:<ul id="21caf5cf-afc2-806d-9545-f2306dade53b" class="bulleted-list"><li style="list-style-type:circle">인프라 관리 부담 감소</li></ul><ul id="21caf5cf-afc2-800d-bc7d-d3ab8aa6ac3f" class="bulleted-list"><li style="list-style-type:circle">Azure PaaS 기반으로 자동 확장 및 높은 가용성 제공</li></ul></li></ul><hr id="21caf5cf-afc2-80cd-8ad8-f315c5803452"/><h3 id="21caf5cf-afc2-807a-9cf9-f7b753005c2d" class="">✅ 4. 스키마 레지스트리 기능</h3><ul id="21caf5cf-afc2-80cc-98eb-d1ac9daaa6ac" class="bulleted-list"><li style="list-style-type:disc"><strong>스키마</strong>: 데이터 구조/형식을 정의하는 청사진 (예: JSON 스키마)</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-803c-b628-da1cd0ee4574" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;type&quot;: &quot;record&quot;,
+  &quot;name&quot;: &quot;SensorReading&quot;,
+  &quot;fields&quot;: [
+    {&quot;name&quot;: &quot;deviceId&quot;, &quot;type&quot;: &quot;string&quot;},
+    {&quot;name&quot;: &quot;temperature&quot;, &quot;type&quot;: &quot;float&quot;},
+    {&quot;name&quot;: &quot;humidity&quot;, &quot;type&quot;: &quot;float&quot;},
+    {&quot;name&quot;: &quot;timestamp&quot;, &quot;type&quot;: &quot;long&quot;}
+  ]
+}</code></pre><ul id="21caf5cf-afc2-80a5-b006-cb5188e65243" class="bulleted-list"><li style="list-style-type:disc">스키마 레지스트리 필요 이유:<ul id="21caf5cf-afc2-8029-913f-fa2a4c278831" class="bulleted-list"><li style="list-style-type:circle">생산자와 소비자 간 스키마 불일치 방지</li></ul><ul id="21caf5cf-afc2-8062-b18d-e16b4c2eb23b" class="bulleted-list"><li style="list-style-type:circle">데이터 오류 방지 및 품질 보장</li></ul></li></ul><ul id="21caf5cf-afc2-8062-8f6b-c99ff756f567" class="bulleted-list"><li style="list-style-type:disc">Azure Schema Registry 주요 기능:<ol type="1" id="21caf5cf-afc2-807c-b5dc-d42a62455313" class="numbered-list" start="1"><li>중앙 저장소에서 스키마 저장 및 버전 관리</li></ol><ol type="1" id="21caf5cf-afc2-80d8-a69d-d7b6aabf0010" class="numbered-list" start="2"><li>생산자 데이터 자동 검증</li></ol><ol type="1" id="21caf5cf-afc2-8090-ab12-ec00fd583a34" class="numbered-list" start="3"><li>소비자가 최신 스키마로 데이터 처리 가능</li></ol></li></ul><hr id="21caf5cf-afc2-8077-bada-c8f20e652c05"/><h3 id="21caf5cf-afc2-80f4-8d7a-c495db4ec468" class="">✅ 5. 활용 분야 및 사례</h3><ul id="21caf5cf-afc2-806a-9ed1-dc3cbdb1fe53" class="bulleted-list"><li style="list-style-type:disc">실시간 대시보드 (예: 생산라인 모니터링, IoT 센서)</li></ul><ul id="21caf5cf-afc2-802f-961f-ce8f1cc4c8f3" class="bulleted-list"><li style="list-style-type:disc">이상 감지 시스템 (예: 보안, 금융 거래)</li></ul><ul id="21caf5cf-afc2-80d2-a4cb-ee758c08bd43" class="bulleted-list"><li style="list-style-type:disc">개인 맞춤 서비스 제공 (예: 사용자 행동 분석)</li></ul><ul id="21caf5cf-afc2-803c-9f41-d425e661e18f" class="bulleted-list"><li style="list-style-type:disc">핵 사용 감지 (예: 온라인 게임 부정행위 탐지)</li></ul><hr id="21caf5cf-afc2-8024-ae68-d7436d8908c4"/><h3 id="21caf5cf-afc2-807f-9fb2-cfdc81489ba3" class="">✅ 6. 실전 시나리오: 스마트 팩토리 IoT 데이터 수집</h3><ol type="1" id="21caf5cf-afc2-8013-b939-f231b9917e94" class="numbered-list" start="1"><li><strong>IoT 센서 설치</strong>: 생산 설비의 상태, 온도, 진동 등 실시간 수집</li></ol><ol type="1" id="21caf5cf-afc2-80c9-8cdd-ceacd84b843a" class="numbered-list" start="2"><li><strong>Event Hubs로 데이터 수집</strong>: MQTT, AMQP 등의 프로토콜 사용</li></ol><ol type="1" id="21caf5cf-afc2-8006-b717-d8d04416bf1f" class="numbered-list" start="3"><li><strong>Azure Functions와 연동</strong>: Event Hubs 트리거로 실시간 분석 수행</li></ol><ol type="1" id="21caf5cf-afc2-80e9-b54e-f8ed9d802461" class="numbered-list" start="4"><li><strong>분석 결과 활용</strong>:<ul id="21caf5cf-afc2-809c-a47d-ea11b231e19d" class="bulleted-list"><li style="list-style-type:disc">실시간 대시보드 구축</li></ul><ul id="21caf5cf-afc2-80cd-83fd-f6edbedf9ff1" class="bulleted-list"><li style="list-style-type:disc">이상 감지 및 알림 시스템</li></ul><ul id="21caf5cf-afc2-806c-8b01-ff0f6e628ebf" class="bulleted-list"><li style="list-style-type:disc">생산 효율성 개선</li></ul></li></ol><hr id="21caf5cf-afc2-804c-bfbd-e6d539a048e2"/><h3 id="21caf5cf-afc2-8001-8ae7-fa1c61fea41d" class="">✅ 7. Azure Portal에서 Event Hub 생성 절차</h3><ol type="1" id="21caf5cf-afc2-8094-944a-defd31d6ba19" class="numbered-list" start="1"><li><strong>리소스 그룹 생성</strong><ul id="21caf5cf-afc2-8053-9879-fc0e23c58bbb" class="bulleted-list"><li style="list-style-type:disc"><a href="https://portal.azure.com/">https://portal.azure.com</a> → 리소스 그룹 → + 만들기</li></ul><ul id="21caf5cf-afc2-80d3-bebb-d5035de77bdb" class="bulleted-list"><li style="list-style-type:disc">예: el31-solar-hubs-rg</li></ul></li></ol><ol type="1" id="21caf5cf-afc2-80bb-9880-cfcb7026d7d4" class="numbered-list" start="2"><li><strong>Event Hubs 네임스페이스 생성</strong><ul id="21caf5cf-afc2-8017-ae8d-c4391518c0e5" class="bulleted-list"><li style="list-style-type:disc">Event Hubs → + 만들기</li></ul><ul id="21caf5cf-afc2-803d-849a-e8bc68d8b936" class="bulleted-list"><li style="list-style-type:disc">예: el31-solar-hub-ns, 위치: East US</li></ul></li></ol><ol type="1" id="21caf5cf-afc2-8040-827a-ef33a0541daa" class="numbered-list" start="3"><li><strong>Event Hub 생성</strong><ul id="21caf5cf-afc2-8046-a087-ff1fe3d712a6" class="bulleted-list"><li style="list-style-type:disc">네임스페이스 선택 후 + 이벤트 허브</li></ul><ul id="21caf5cf-afc2-80c9-9093-e2920e306131" class="bulleted-list"><li style="list-style-type:disc">예: el31_solar_hub, 파티션 수: 1개, 보존 시간: 1시간</li></ul></li></ol><hr id="21caf5cf-afc2-80ee-a589-d6692780ed47"/><h3 id="21caf5cf-afc2-8090-8f2c-f2351df74f44" class="">✅ 8. 실습: Azure Functions와 Event Hubs 연동</h3><ol type="1" id="21caf5cf-afc2-8057-9382-cf7e1a248217" class="numbered-list" start="1"><li><strong>Git 설치 후 프로젝트 클론</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-80cb-8138-c8bc9649560c" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all">git clone https://github.com/IDKNWHORU/azure-functions-eventhubs
+cd azure-functions-eventhubs
+code .</code></pre></li></ol><ol type="1" id="21caf5cf-afc2-8074-bf6d-eb3624f3c5c5" class="numbered-list" start="2"><li><strong>local.settings.json 설정</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-803b-b416-f2ed5b68dc77" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;IsEncrypted&quot;: false,
+  &quot;Values&quot;: {
+    &quot;AzureWebJobsStorage&quot;: &quot;UseDevelopmentStorage=true&quot;,
+    &quot;FUNCTIONS_WORKER_RUNTIME&quot;: &quot;python&quot;,
+    &quot;SolarEventHubName&quot;: &quot;el31_solar_hub&quot;,
+    &quot;SolarEventHubConnectionString&quot;: &quot;&lt;복사한 연결 문자열&gt;&quot;
+  }
+}</code></pre></li></ol><ol type="1" id="21caf5cf-afc2-8061-b2be-e21fdc8dad7c" class="numbered-list" start="3"><li><strong>Event Hub 연결 문자열 확인 방법</strong><ul id="21caf5cf-afc2-801f-a651-e7db285d625c" class="bulleted-list"><li style="list-style-type:disc">Azure Portal → Event Hub 네임스페이스 → 설정 → 공유 엑세스 정책</li></ul><ul id="21caf5cf-afc2-805a-b894-f2a1bef31fef" class="bulleted-list"><li style="list-style-type:disc">RootManageSharedAccessKey → Primary connection string 복사 후 설정 파일에 삽입</li></ul></li></ol><ol type="1" id="21caf5cf-afc2-80cd-b111-fefd91dc459d" class="numbered-list" start="4"><li><strong>Azure Function 실행 방법</strong><ul id="21caf5cf-afc2-802c-90a8-e9cb56c208c0" class="bulleted-list"><li style="list-style-type:disc">VS Code에서 <code>F5</code> 실행</li></ul><ul id="21caf5cf-afc2-808a-95b4-f837bc761ee2" class="bulleted-list"><li style="list-style-type:disc">함수 <code>eventhub_trigger</code>에서 마우스 우클릭 → <code>Execute Function Now…</code></li></ul><ul id="21caf5cf-afc2-80d7-a1f6-d73f04d4b672" class="bulleted-list"><li style="list-style-type:disc">요청 본문: <code>{&quot;name&quot;: &quot;Solar Energy&quot;}</code> 입력 후 실행</li></ul></li></ol><ol type="1" id="21caf5cf-afc2-80ea-ad1c-f83683044fe2" class="numbered-list" start="5"><li><strong>Event Hub 전송 확인</strong><ul id="21caf5cf-afc2-80b9-a7c3-c27e00ba092e" class="bulleted-list"><li style="list-style-type:disc">Azure Portal → Event Hub → Data Explorer → 이벤트 보기</li></ul><ul id="21caf5cf-afc2-802d-a029-c824592ba19b" class="bulleted-list"><li style="list-style-type:disc">메시지 본문에 <code>&quot;Solar Energy&quot;</code> 확인 가능</li></ul></li></ol><hr id="21caf5cf-afc2-8090-9d37-f795d90756a0"/><h3 id="21caf5cf-afc2-8093-8e3b-e7d1a1113943" class="">✅ 9. 요약 정리</h3><ul id="21caf5cf-afc2-8008-87c4-fce9f64ba422" class="bulleted-list"><li style="list-style-type:disc">Azure Event Hubs는 Kafka 호환성과 스키마 레지스트리를 제공하는 <strong>확장성 높은 실시간 데이터 스트리밍 서비스</strong></li></ul><ul id="21caf5cf-afc2-809f-b114-fb1ae1a11011" class="bulleted-list"><li style="list-style-type:disc">다양한 데이터 소스를 수집하여 실시간 분석과 서비스에 활용 가능</li></ul><ul id="21caf5cf-afc2-8032-83b7-cb1f82c84a87" class="bulleted-list"><li style="list-style-type:disc">Azure Functions와의 연동을 통해 손쉽게 실시간 파이프라인 구축 가능</li></ul><ul id="21caf5cf-afc2-80d8-9456-eb53b7a7d3c3" class="bulleted-list"><li style="list-style-type:disc">실습을 통해 Git, VS Code, Azure Portal을 이용한 end-to-end 파이프라인 구현 가능</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

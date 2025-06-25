@@ -1,0 +1,693 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>증분 데이터 로드</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="21caf5cf-afc2-804f-b516-d11dbc408abf" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="https://www.notion.so/icons/description_gray.svg"/></div><h1 class="page-title">증분 데이터 로드</h1><p class="page-description"></p></header><div class="page-body"><h3 id="21caf5cf-afc2-80c7-bd74-d962be1bafca" class="">✅ 1. 개요: 증분 데이터 로드란?</h3><ul id="21caf5cf-afc2-80af-baa5-c76fa9999418" class="bulleted-list"><li style="list-style-type:disc"><strong>증분 데이터 로드(Incremental Load)</strong>: 전체 데이터가 아닌 변경된 데이터만을 추출 및 적재하는 방식</li></ul><ul id="21caf5cf-afc2-8041-8224-e3d8b36760fe" class="bulleted-list"><li style="list-style-type:disc"><strong>목적</strong>: 효율적인 데이터 적재, 실시간 분석, 자원 절약</li></ul><ul id="21caf5cf-afc2-8074-aa37-ddd30a984517" class="bulleted-list"><li style="list-style-type:disc"><strong>핵심 기술</strong>: CDC (Change Data Capture)<ul id="21caf5cf-afc2-80f4-bd92-e7a028ef5c42" class="bulleted-list"><li style="list-style-type:circle">변경 감지: Insert, Update, Delete 이벤트 감지</li></ul><ul id="21caf5cf-afc2-80ff-961e-e9b8658ea84f" class="bulleted-list"><li style="list-style-type:circle">변경 추출: 트랜잭션 로그, 타임스탬프, 트리거 기반</li></ul><ul id="21caf5cf-afc2-80f2-a364-eea77ac4894f" class="bulleted-list"><li style="list-style-type:circle">변경 전파: 변경된 데이터만 대상 시스템에 반영</li></ul></li></ul><hr id="21caf5cf-afc2-805e-90b1-f9e9f1fbd335"/><h3 id="21caf5cf-afc2-809a-8478-f80c882ee518" class="">✅ 2. 실습 기본 구성</h3><ul id="21caf5cf-afc2-802b-87e5-f7b700cd72a9" class="bulleted-list"><li style="list-style-type:disc"><strong>입력</strong>: Blob - input 컨테이너</li></ul><ul id="21caf5cf-afc2-80c7-831b-ceddbc3c5745" class="bulleted-list"><li style="list-style-type:disc"><strong>출력</strong>: Blob - output 컨테이너</li></ul><ul id="21caf5cf-afc2-80b8-be7b-e2acb5b2ab8e" class="bulleted-list"><li style="list-style-type:disc"><strong>핵심 파일들</strong>:<ul id="21caf5cf-afc2-8011-ab4c-fbd1495e8c58" class="bulleted-list"><li style="list-style-type:circle"><code>orders_initial.csv</code>: 최초 전체 데이터</li></ul><ul id="21caf5cf-afc2-809e-adc2-c45ea7ea627b" class="bulleted-list"><li style="list-style-type:circle"><code>orders_incremental.csv</code>: 증분 데이터 모음</li></ul><ul id="21caf5cf-afc2-80bb-868d-e6f75c77bb24" class="bulleted-list"><li style="list-style-type:circle"><code>watermark.txt</code>: 이전 실행 시점 기록 (e.g., <code>1900-01-01T00:00:00Z</code>)</li></ul><ul id="21caf5cf-afc2-804e-a761-c85fdcf056d1" class="bulleted-list"><li style="list-style-type:circle"><code>incremental_data_*.csv</code>: 날짜별로 업로드된 증분 파일들</li></ul></li></ul><h3 id="21caf5cf-afc2-806b-90a9-e6b4195c4377" class="">✅ 전체 흐름</h3><ol type="1" id="21caf5cf-afc2-80b7-a446-d90f95528770" class="numbered-list" start="1"><li><strong>이전 실행 시각 조회</strong> (watermark.txt)</li></ol><ol type="1" id="21caf5cf-afc2-8094-9ebc-f8473eb44835" class="numbered-list" start="2"><li><strong>현재 실행 시각 저장</strong> → <code>NewWatermarkValue = @utcnow()</code></li></ol><ol type="1" id="21caf5cf-afc2-80bc-9026-e9818bdd6a75" class="numbered-list" start="3"><li><strong>조건 필터링</strong>: <code>watermark &lt; 파일 업로드 시각 &lt; NewWatermarkValue</code> 만족하는 데이터만 Copy</li></ol><ol type="1" id="21caf5cf-afc2-80c5-97c8-c621a80e817e" class="numbered-list" start="4"><li><strong>데이터 복사</strong>: 조건 만족하는 증분 파일을 대상(output)에 적재</li></ol><ol type="1" id="21caf5cf-afc2-8071-8fab-f74730fb5458" class="numbered-list" start="5"><li><strong>워터마크 갱신</strong>: 현재 시각을 <code>watermark.txt</code>에 저장</li></ol><hr id="21caf5cf-afc2-8079-86c1-d17eed725aed"/><h3 id="21caf5cf-afc2-80bb-aae7-dd950dd23b81" class="">✅ 3. 실습 준비</h3><ul id="21caf5cf-afc2-80ef-97a7-c11cede33045" class="bulleted-list"><li style="list-style-type:disc"><strong>Blob 컨테이너 구성</strong><ul id="21caf5cf-afc2-8089-9abf-d31510c448c2" class="bulleted-list"><li style="list-style-type:circle"><code>input</code>: 증분 및 초기 파일 업로드</li></ul><ul id="21caf5cf-afc2-805b-9401-d203ba558177" class="bulleted-list"><li style="list-style-type:circle"><code>output</code>: 적재 결과 저장</li></ul></li></ul><ul id="21caf5cf-afc2-80a0-b400-fa6e687508b6" class="bulleted-list"><li style="list-style-type:disc"><strong>실습용 파일 준비</strong><ul id="21caf5cf-afc2-809a-9208-f6cd73f0af6c" class="bulleted-list"><li style="list-style-type:circle"><code>orders_initial.csv</code></li></ul><ul id="21caf5cf-afc2-8084-b1c8-ea58dfd04582" class="bulleted-list"><li style="list-style-type:circle"><code>orders_incremental.csv</code></li></ul><ul id="21caf5cf-afc2-80ec-a98c-dd30b0e7d811" class="bulleted-list"><li style="list-style-type:circle"><code>orders_incremental_3rd.csv</code>, <code>4th.csv</code>, <code>5th.csv</code></li></ul><ul id="21caf5cf-afc2-806a-82e6-cb6c557c7475" class="bulleted-list"><li style="list-style-type:circle"><code>watermark.txt</code>: <code>1900-01-01T00:00:00Z</code> 초기값 설정</li></ul></li></ul><hr id="21caf5cf-afc2-809c-a339-d40ff25d40c3"/><h3 id="21caf5cf-afc2-80a3-8cf2-e47c6d070940" class="">✅ 4. 파이프라인 구성</h3><h3 id="21caf5cf-afc2-8092-a6f6-d6b36dd46527" class="">✅ 구성요소</h3><ol type="1" id="21caf5cf-afc2-802d-9455-e6b3e525798a" class="numbered-list" start="1"><li><strong>Lookup</strong>: 이전 실행 워터마크 값 조회 (<code>watermark.txt</code> 첫 행)</li></ol><ol type="1" id="21caf5cf-afc2-8083-86a7-d692a1719b57" class="numbered-list" start="2"><li><strong>Set Variable</strong>: 현재 시각을 <code>NewWatermarkValue</code> 변수에 저장<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-8071-b917-f9580bb2fc18" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">NewWatermarkValue = @utcnow()
+</code></pre></li></ol><ol type="1" id="21caf5cf-afc2-8046-871f-f2330e2c6327" class="numbered-list" start="3"><li><strong>Filter 조건 적용 후 Copy</strong>: 아래 조건을 만족하는 파일만 적재<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-8089-b0ff-d33c489a237d" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">watermark &lt; 업로드 시각 &lt; NewWatermarkValue
+</code></pre></li></ol><ol type="1" id="21caf5cf-afc2-80ec-bc95-e74a4c1a416d" class="numbered-list" start="4"><li><strong>Copy Activity</strong>: 조건을 만족하는 증분 CSV 복사</li></ol><ol type="1" id="21caf5cf-afc2-8017-b86e-c9689ced8b16" class="numbered-list" start="5"><li><strong>워터마크 파일 갱신</strong>: <code>NewWatermarkValue</code>를 다시 <code>watermark.txt</code>로 저장</li></ol><hr id="21caf5cf-afc2-80a1-9670-e62f5b4d4939"/><h3 id="21caf5cf-afc2-80d1-8627-f61511fa56ee" class="">✅ 5. 게시 및 실행 단계</h3><h3 id="21caf5cf-afc2-80a8-936d-c164420e21ea" class="">✅ 초기 실행</h3><ul id="21caf5cf-afc2-8047-91be-f8b65312ff20" class="bulleted-list"><li style="list-style-type:disc"><code>orders_initial.csv</code> → output 컨테이너에 적재</li></ul><ul id="21caf5cf-afc2-802a-ba7e-d933e25f54d6" class="bulleted-list"><li style="list-style-type:disc">watermark: <code>1900-01-01T00:00:00Z</code></li></ul><h3 id="21caf5cf-afc2-80ed-a4f0-dd30d576889a" class="">✅ 증분 실행 1</h3><ul id="21caf5cf-afc2-8067-b544-db11b1ff6bfb" class="bulleted-list"><li style="list-style-type:disc"><code>orders_incremental.csv</code> 업로드</li></ul><ul id="21caf5cf-afc2-8046-9f95-c3108884aa5d" class="bulleted-list"><li style="list-style-type:disc">조건 만족하는 데이터만 복사</li></ul><ul id="21caf5cf-afc2-8016-9cc4-f83a4c91e093" class="bulleted-list"><li style="list-style-type:disc">watermark 갱신</li></ul><h3 id="21caf5cf-afc2-80fc-91a5-d4dc217473b3" class="">✅ 증분 실행 2~3</h3><ul id="21caf5cf-afc2-8052-9d65-e83cd0172117" class="bulleted-list"><li style="list-style-type:disc">3rd, 4th, 5th 파일 순차 업로드 후 실행</li></ul><ul id="21caf5cf-afc2-80ca-93a1-c57a163d3d68" class="bulleted-list"><li style="list-style-type:disc">각각의 실행에서 watermark 조건에 맞는 데이터만 적재됨</li></ul><hr id="21caf5cf-afc2-80ac-960f-f0aa4f00253a"/><h3 id="21caf5cf-afc2-8078-8aa5-f1f8ed278471" class="">✅ 6. 전체 흐름 요약</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21caf5cf-afc2-803a-8145-fbf181ba38ce" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Blob - input
+ └─ ForEach
+     └─ Pipeline
+         ├─ Lookup (이전 watermark 확인)
+         ├─ Set Variable (현재 시간 저장)
+         ├─ Copy (조건 만족 시 데이터 적재)
+         └─ Copy (워터마크 갱신)
+Blob - output
+</code></pre><hr id="21caf5cf-afc2-800c-860f-c966dd560993"/><h3 id="21caf5cf-afc2-80be-b78a-dff00dc1a8bf" class="">✅ 7. 마무리 및 활용</h3><ul id="21caf5cf-afc2-8015-8d66-d92d8901d938" class="bulleted-list"><li style="list-style-type:disc"><strong>장점</strong>: 데이터 처리 비용 최소화, 최신 데이터 유지, 빠른 분석 가능</li></ul><ul id="21caf5cf-afc2-80e9-bc8e-eff58f35a6be" class="bulleted-list"><li style="list-style-type:disc"><strong>활용 예시</strong>:<ul id="21caf5cf-afc2-8032-9a7a-e7a9f3f95831" class="bulleted-list"><li style="list-style-type:circle">매출/주문 데이터 실시간 반영</li></ul><ul id="21caf5cf-afc2-8038-9f85-f64e9cf64949" class="bulleted-list"><li style="list-style-type:circle">실시간 센서 데이터 적재</li></ul><ul id="21caf5cf-afc2-8088-80d9-f36929c57e34" class="bulleted-list"><li style="list-style-type:circle">정기적 보고용 데이터 자동 적재</li></ul></li></ul><ul id="21caf5cf-afc2-802b-9e01-c370f5548f79" class="bulleted-list"><li style="list-style-type:disc"><strong>응용 가능</strong>:<ul id="21caf5cf-afc2-80dc-a862-c30ee4c425c5" class="bulleted-list"><li style="list-style-type:circle">SQL 기반 CDC 연계</li></ul><ul id="21caf5cf-afc2-806c-aaf3-fadd0f8fac83" class="bulleted-list"><li style="list-style-type:circle">Power BI 실시간 대시보드와 연동</li></ul></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,801 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Azure Machine Learning</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="216af5cf-afc2-80c0-a37f-f8873a124c06" class="page sans"><header><h1 class="page-title">Azure Machine Learning</h1><p class="page-description"></p></header><div class="page-body"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="216af5cf-afc2-8073-b1b6-ce061e4661a9"><div style="width:100%"><p id="216af5cf-afc2-80e2-a734-dadd7bc39098" class="">🌏 Azure ML Designer</p><p id="216af5cf-afc2-80be-b37a-ce149adf6265" class="">📊 데이터 정보(변수 타입, 결측치 존재 여부, 클래스 불균형 여부 등)</p><p id="216af5cf-afc2-80df-b867-cc96f8a811c2" class="">🔧 분석 목적 및 후보 모델 선정</p><p id="216af5cf-afc2-8007-a07d-e32bcc128cd4" class="">✳️ 모델 평가 취합</p></div></figure><nav id="216af5cf-afc2-80d0-a881-c8a60c33a695" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#216af5cf-afc2-80e0-9b31-c289b459016d">군집 모델</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-8045-a762-d5e397081159">K-means Clustering</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-80b7-95df-f8301eeb7c0f">K-means Clustering + 로지스틱 회귀</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#216af5cf-afc2-80a8-9fdc-c544d3bab58e">분류 모델</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-80ab-a5b9-f1889aecc22f">랜덤 포레스트 (Two-Class Decision Forest)</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-8096-a3ac-cbdd242f8dfb">Two-Class Random Forest</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-80e4-a7cf-f273e6d4f712">Two-Class Boosted Decision Tree + 튜닝</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-80db-8edd-d3c54ae19ebc">Two-Class Decision Forest + 카이제곱 피처 선택</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-800f-9116-ef4ee286221a">Two-Class Support Vector Machine (SVM)</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-8054-974e-c818da0782f8">Two-Class Logistic Regression + Stratified Split</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-80e3-8abf-fe25ad797221">Two-Class Logistic Regression + Cross Validation</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-80cb-83ad-c3177b770c04">Boosted Decision Tree + SMOTE</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#216af5cf-afc2-8007-a1b2-d52c17d3c5d4">회귀 모델</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-8008-924f-d10278129411">선형 회귀 (Linear Regression)</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-802c-8c71-f10806434b63">Decision Tree Regression</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#216af5cf-afc2-8042-97a9-c5b36ba8b821">시각화 Code</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-8037-aad6-fde4d510cd13">Heatmap</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-8082-8681-ca8dcaf0822d">Scatterplot</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#216af5cf-afc2-80c5-aac2-dc2509d4fdf1">Normalize Transformation Method 정리</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#216af5cf-afc2-80b2-9101-cc93d02c4ab4">📌 모델별 추천 방식</a></div></nav><p id="216af5cf-afc2-80d6-bed5-dcdb8c1fe56a" class="">
+</p><hr id="216af5cf-afc2-8067-b86c-de9460eee53e"/><p id="216af5cf-afc2-8054-8881-ea6c0d2ed957" class="">
+</p><h2 id="216af5cf-afc2-80e0-9b31-c289b459016d" class="">군집 모델</h2><h3 id="216af5cf-afc2-8045-a762-d5e397081159" class="">K-means Clustering</h3><ul id="216af5cf-afc2-8061-a05f-f3382227b165" class="bulleted-list"><li style="list-style-type:disc">데이터 포인트를 유사도 기준으로 K개의 군집으로 나누는 비지도 학습 알고리즘.</li></ul><ul id="216af5cf-afc2-8032-bbd7-ee04daa63615" class="bulleted-list"><li style="list-style-type:disc">대표적인 거리 기반 클러스터링 기법.</li></ul><p id="216af5cf-afc2-8012-8108-d0f5cd1a1e8d" class="">
+</p><p id="216af5cf-afc2-80bc-bc2f-c862c9e50096" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8085-a684-c95dd2717265" class="column-list"><div id="216af5cf-afc2-80de-a195-fa28b4d5776f" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80ec-9878-c758463389ef" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-8007-8217-df5a68a4b836" class="numbered-list" start="2"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-80ba-8ba5-d8beabb966cf" class="numbered-list" start="3"><li><code>Normalize Data</code><p id="216af5cf-afc2-80f0-ab1a-e8a33a97a1c4" class="">→ 거리 기반 알고리즘 특성상 스케일 정규화 필요 (0~1 범위)</p></li></ol><ol type="1" id="216af5cf-afc2-80d6-8373-e83a6dbf4974" class="numbered-list" start="4"><li><code><strong>K-means Clustering</strong></code><p id="216af5cf-afc2-80bc-8d12-ea30ef211eaa" class="">→ 클러스터 수 K 지정 (예: K=3), 군집화 수행</p><p id="216af5cf-afc2-80b5-9893-dae6aa8812f7" class="">→ 파라미터:</p><ul id="216af5cf-afc2-8023-9d17-d4dd294a8ed2" class="bulleted-list"><li style="list-style-type:disc">초기 중심값 지정 방식: Random</li></ul><ul id="216af5cf-afc2-808f-963a-c3ca33532506" class="bulleted-list"><li style="list-style-type:disc">반복 횟수 설정 가능</li></ul></li></ol></div><div id="216af5cf-afc2-809f-b097-ed8d226bb76a" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-808e-8b8b-d393fb9880ee" class="numbered-list" start="5"><li><code><strong>Assign Data to Clusters</strong></code><p id="216af5cf-afc2-806d-a11e-e6fc05d047ee" class="">→ 각 샘플에 클러스터 번호 부여</p></li></ol><ol type="1" id="216af5cf-afc2-80b7-8954-dc7c31c2c022" class="numbered-list" start="6"><li><code><strong>Evaluate Model (Optional)</strong></code><p id="216af5cf-afc2-8056-9cab-de7f3c99e842" class="">→ 군집별 통계 요약 등 확인 (별도 지표 없음)</p></li></ol></div></div><p id="216af5cf-afc2-8004-b2c8-f8864a8ddcbb" class=""><strong>📊 모델 평가 지표</strong></p><blockquote id="216af5cf-afc2-801e-ba4e-eca266bfd926" class="">K-means는 지도 학습이 아니므로 일반적인 Accuracy, F1 등은 사용되지 않음</blockquote><ul id="216af5cf-afc2-80ae-bf1d-fb3ef0882ce1" class="bulleted-list"><li style="list-style-type:disc">Within-cluster SSE (Sum of Squared Error): 각 클러스터 내부 분산. 작을수록 좋음</li></ul><ul id="216af5cf-afc2-8024-871a-f6d653e46cc8" class="bulleted-list"><li style="list-style-type:disc">Silhouette Score (외부 계산 필요): 클러스터 응집도 및 분리도 평가</li></ul><p id="216af5cf-afc2-8091-ad74-f66096519427" class="">
+</p><p id="216af5cf-afc2-8077-b88d-c103a8be8758" class="">
+</p><hr id="216af5cf-afc2-80ec-8b05-ecfce8f85334"/><p id="216af5cf-afc2-8020-be37-f0fbd9781486" class="">
+</p><h3 id="216af5cf-afc2-80b7-95df-f8301eeb7c0f" class="">K-means Clustering + 로지스틱 회귀</h3><p id="216af5cf-afc2-80ff-a3da-c1886580a7cd" class="">
+</p><p id="216af5cf-afc2-8013-86ed-d3700347f771" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8029-94f9-e1be05ed02e0" class="column-list"><div id="216af5cf-afc2-80f9-9e2a-c10b6d297d97" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-802b-9f18-e0ed0842e9d0" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-809c-bf08-ecbfa05b0d23" class="numbered-list" start="2"><li><code>Normalize Data</code></li></ol><ol type="1" id="216af5cf-afc2-803b-b9e5-c4da23cdec31" class="numbered-list" start="3"><li><code>K-means Clustering</code><p id="216af5cf-afc2-8027-95b0-fb8687ce053e" class="">→ k=3 (클러스터 수)</p><p id="216af5cf-afc2-80a3-9f3a-d8f66603aced" class="">→ 거리: 유클리디언</p></li></ol><ol type="1" id="216af5cf-afc2-8050-a91b-cce06acf8ec8" class="numbered-list" start="4"><li><code>Assign Data to Clusters</code></li></ol></div><div id="216af5cf-afc2-8049-b151-f75e789ffcbf" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-8076-ab40-c11bb04933ec" class="numbered-list" start="5"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-8022-8843-f0187b5174b4" class="numbered-list" start="6"><li><code>Split Data</code></li></ol><ol type="1" id="216af5cf-afc2-80db-94f5-f3a609e984b5" class="numbered-list" start="7"><li><code>Multiclass Logistic Regression</code></li></ol><ol type="1" id="216af5cf-afc2-809d-ac0a-e6c6864ff63d" class="numbered-list" start="8"><li><code>Score Model</code> → <code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-804a-a7cc-d0c01234001e" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-806e-a445-f98288dd2dc1" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 예측 정확도 (클래스 분류 정확성)</li></ul><ul id="216af5cf-afc2-80fb-a0e8-d2128910f119" class="bulleted-list"><li style="list-style-type:disc">로지스틱 회귀 결과로 측정</li></ul><p id="216af5cf-afc2-8008-a784-e94449f6db35" class="">
+</p><hr id="216af5cf-afc2-8048-82fc-eba51948e467"/><p id="216af5cf-afc2-8019-916b-cdd107fbe5bb" class="">
+</p><h2 id="216af5cf-afc2-80a8-9fdc-c544d3bab58e" class="">분류 모델</h2><h3 id="216af5cf-afc2-80ab-a5b9-f1889aecc22f" class="">랜덤 포레스트 (Two-Class Decision Forest)</h3><ul id="216af5cf-afc2-803d-8828-fd5530ed8c47" class="bulleted-list"><li style="list-style-type:disc">여러 결정 트리를 랜덤하게 훈련한 후 그 결과를 평균내어 예측을 수행하는 앙상블 분류 알고리즘</li></ul><ul id="216af5cf-afc2-8060-bc0f-f014c73e8e8f" class="bulleted-list"><li style="list-style-type:disc">과적합에 강하고 분류 정확도가 높음</li></ul><p id="216af5cf-afc2-80de-ba75-fef6ee1c3879" class="">
+</p><p id="216af5cf-afc2-80e4-9017-c5b9d96be79e" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-806e-b211-e266fb782074" class="column-list"><div id="216af5cf-afc2-809b-ab83-c6a00b3c4349" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-808b-9389-ecc478a25d9f" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code><p id="216af5cf-afc2-8061-8dde-dea710ccb37c" class="">→ 분석에 필요한 컬럼만 추출</p></li></ol><ol type="1" id="216af5cf-afc2-807f-91b6-d197d8b81906" class="numbered-list" start="2"><li><code>Edit Metadata</code><p id="216af5cf-afc2-8088-a82f-d4a9546cfeb3" class="">→ 범주형 변수 지정</p></li></ol><ol type="1" id="216af5cf-afc2-8047-97a6-f2b61687c6fd" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code><p id="216af5cf-afc2-8098-8f81-d62377066bc9" class="">→ 범주형 변수를 One-Hot Encoding</p></li></ol><ol type="1" id="216af5cf-afc2-8011-809f-d4bc43d0e82b" class="numbered-list" start="5"><li><code>Split Data</code><p id="216af5cf-afc2-8011-9dd2-d98d2b24df3f" class="">→ 학습/테스트 데이터 분리 7:3</p></li></ol></div><div id="216af5cf-afc2-8094-b52d-dc88865a17af" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80ea-897f-efc1e556e24a" class="numbered-list" start="6"><li><code>Two-Class Decision Forest</code><p id="216af5cf-afc2-801c-a1cc-cd16eaeb131d" class="">→ 앙상블 기반 이진 분류 모델</p></li></ol><ol type="1" id="216af5cf-afc2-807a-8e9b-dd6423d2c750" class="numbered-list" start="7"><li><code>Train Model</code><p id="216af5cf-afc2-8062-9aca-e8687a0e1f01" class="">→ 학습 수행</p></li></ol><ol type="1" id="216af5cf-afc2-804c-a9d1-d6630cd23057" class="numbered-list" start="8"><li><code>Score Model</code><p id="216af5cf-afc2-807e-b6b1-ee361078cb84" class="">→ 테스트 데이터 예측</p></li></ol><ol type="1" id="216af5cf-afc2-8069-83fa-c061b3801b05" class="numbered-list" start="9"><li><code>Evaluate Model</code><p id="216af5cf-afc2-800e-8329-c2c9b6d161d5" class="">→ 분류 성능 평가</p></li></ol></div></div><p id="216af5cf-afc2-80c6-a9fe-ebd70158d1e4" class="">📊 <strong>모델 평가 지표</strong></p><ul id="216af5cf-afc2-8008-bdcd-de3487ad5da5" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 중 맞춘 비율 (높을수록 좋음)</li></ul><ul id="216af5cf-afc2-80d9-b466-f414eaf83e86" class="bulleted-list"><li style="list-style-type:disc">Precision: Positive로 예측한 것 중 실제 Positive</li></ul><ul id="216af5cf-afc2-8087-b15d-ca6705cf15f4" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 Positive 중 맞춘 비율</li></ul><ul id="216af5cf-afc2-806b-b0ed-eaf0388f1e3d" class="bulleted-list"><li style="list-style-type:disc">F1 Score: Precision과 Recall의 조화 평균. 두 지표의 균형</li></ul><ul id="216af5cf-afc2-80aa-b828-e8f137027e96" class="bulleted-list"><li style="list-style-type:disc">AUC: 0.5~1 사이, 1에 가까울수록 좋음</li></ul><p id="216af5cf-afc2-80a5-bd97-e8be7560af03" class="">
+</p><hr id="216af5cf-afc2-8041-b0c7-ef2eaf9a39c6"/><p id="216af5cf-afc2-80a8-809d-c68502e97f57" class="">
+</p><h3 id="216af5cf-afc2-8096-a3ac-cbdd242f8dfb" class="">Two-Class Random Forest</h3><ul id="216af5cf-afc2-8090-a375-f57614b49662" class="bulleted-list"><li style="list-style-type:disc">여러 개의 결정 트리를 랜덤하게 생성하고 투표 방식을 통해 최종 결과를 도출하는 앙상블 기반 이진 분류 모델. </li></ul><ul id="216af5cf-afc2-8062-9bb7-fddde3320809" class="bulleted-list"><li style="list-style-type:disc">과적합에 강하고 성능이 안정적임.</li></ul><p id="216af5cf-afc2-8090-bb66-e491a21bdb98" class="">
+</p><p id="216af5cf-afc2-8089-a909-ec67439950d2" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8018-8e42-e46043602070" class="column-list"><div id="216af5cf-afc2-80e7-bc11-c4093888a6d8" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80ea-ae83-c856dd8df981" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-804a-a203-c45e324b4677" class="numbered-list" start="2"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-80c0-b81b-e90a904d6999" class="numbered-list" start="3"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-80d7-9f97-d8a3d86cfec2" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-8063-8161-fee72ac57fca" class="numbered-list" start="5"><li><code>Split Data</code></li></ol><p id="216af5cf-afc2-80a8-baa8-e58b80ab72f8" class="">
+</p></div><div id="216af5cf-afc2-80d1-b808-eefc64af41af" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80a5-9c3c-f56419b31b06" class="numbered-list" start="6"><li><code>Two-Class Decision Forest</code><p id="216af5cf-afc2-8065-9032-d7fafae7eea1" class="">→ 이진 분류용 앙상블 모델</p><ul id="216af5cf-afc2-800e-84f4-f2945da459fa" class="bulleted-list"><li style="list-style-type:disc">트리 수: 100</li></ul><ul id="216af5cf-afc2-80a3-b40b-f8aea7213d2b" class="bulleted-list"><li style="list-style-type:disc">최대 깊이, 샘플 수 등 기본값 사용</li></ul></li></ol><ol type="1" id="216af5cf-afc2-80d1-810d-f1a19efabcb7" class="numbered-list" start="7"><li><code>Train Model</code>→<code>Score Model</code>→<code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-804c-91d0-faf733bab76f" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-80ce-9729-da60e799e678" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 중 정답률. 높을수록 좋음</li></ul><ul id="216af5cf-afc2-804f-a0c3-f58e5e1e92eb" class="bulleted-list"><li style="list-style-type:disc">Precision: Positive로 예측한 것 중 실제 Positive 비율</li></ul><ul id="216af5cf-afc2-80fa-8ad7-c9f74ee72431" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 Positive 중 올바르게 예측한 비율</li></ul><ul id="216af5cf-afc2-8043-9fd0-fe4a3c962bba" class="bulleted-list"><li style="list-style-type:disc">F1 Score: Precision과 Recall의 조화 평균</li></ul><ul id="216af5cf-afc2-80cc-b7eb-c7e78bb5f28b" class="bulleted-list"><li style="list-style-type:disc">AUC: 0.5 ~ 1 사이. 1에 가까울수록 분류 우수</li></ul><p id="216af5cf-afc2-80a5-a937-edda52bcf9b5" class="">
+</p><hr id="216af5cf-afc2-80d4-b2d9-c642c3dab95c"/><p id="216af5cf-afc2-8046-abf0-f7ffd9d8b316" class="">
+</p><h3 id="216af5cf-afc2-80e4-a7cf-f273e6d4f712" class="">Two-Class Boosted Decision Tree + 튜닝</h3><ul id="216af5cf-afc2-80c1-a423-d1009c6a95d6" class="bulleted-list"><li style="list-style-type:disc">반복적으로 약한 결정 트리를 쌓아가며 오차를 보완해가는 방식의 앙상블 분류 알고리즘.</li></ul><ul id="216af5cf-afc2-8010-b22b-fd097eb78a16" class="bulleted-list"><li style="list-style-type:disc">예측 성능이 높고 불균형 데이터에 강함.</li></ul><p id="216af5cf-afc2-808e-8243-fa1fc8a2f796" class="">
+</p><p id="216af5cf-afc2-80eb-b847-fc3b53970a98" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-80de-af81-e47d0f0bf5a1" class="column-list"><div id="216af5cf-afc2-8086-9601-e417772452d7" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80b8-887f-f6f63e60ef72" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-806f-b9e9-d1d775cd52c4" class="numbered-list" start="2"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-8065-8d54-ca443008cc16" class="numbered-list" start="3"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-80f9-acdb-eee018e947a2" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-8069-b39c-e7278855c9e0" class="numbered-list" start="5"><li><code>Split Data</code></li></ol><ol type="1" id="216af5cf-afc2-80b9-84b5-f56861cd18fd" class="numbered-list" start="6"><li><code>Two-Class Boosted Decision Tree</code><p id="216af5cf-afc2-808e-be54-e5d2f7b2f443" class="">→ 앙상블 분류 모델(Gradient Boosting 기반)</p></li></ol></div><div id="216af5cf-afc2-80a0-9519-e36516c7c163" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80aa-a9c7-f88f383db428" class="numbered-list" start="6"><li><code>Train Model</code></li></ol><ol type="1" id="216af5cf-afc2-8017-93d8-db47be54aff7" class="numbered-list" start="7"><li><code>Tune Model Hyperparameters</code><p id="216af5cf-afc2-80e4-8bfe-df2abaa85b37" class="">→ Boosted Tree에 대해 자동으로 최적 하이퍼파라미터 탐색</p><p id="216af5cf-afc2-80e6-b5dc-ec4fd73f6638" class="">→ 사용된 설정:</p><ul id="216af5cf-afc2-8054-9bee-cf25a06f64f2" class="bulleted-list"><li style="list-style-type:disc">탐색 전략: Random sweep</li></ul><ul id="216af5cf-afc2-8065-a4f7-d93cf0078523" class="bulleted-list"><li style="list-style-type:disc">평가 지표: Accuracy</li></ul></li></ol><ol type="1" id="216af5cf-afc2-80eb-b32e-c145bfe41413" class="numbered-list" start="8"><li><code>Score Model</code> → <code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-80ea-931a-f33bb6dbfc18" class="">📊<strong> 모델 평가 지표</strong></p><ul id="216af5cf-afc2-802f-971b-c08346a601e1" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 예측 중 정답 비율. 높을수록 좋음</li></ul><ul id="216af5cf-afc2-8014-a072-f6e06a9b5626" class="bulleted-list"><li style="list-style-type:disc">Precision: Positive 예측 중 실제 Positive 비율</li></ul><ul id="216af5cf-afc2-8022-bbb3-dba2c038ecd5" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 Positive 중 모델이 맞춘 비율</li></ul><ul id="216af5cf-afc2-80fb-8633-f385077e050b" class="bulleted-list"><li style="list-style-type:disc">F1 Score: Precision과 Recall의 조화 평균</li></ul><ul id="216af5cf-afc2-8074-87dc-ce24752ff87a" class="bulleted-list"><li style="list-style-type:disc">AUC: 분류 모델의 예측력 종합 지표. 0.5~1 범위</li></ul><p id="216af5cf-afc2-8033-a60a-d93bb49fb5f0" class="">
+</p><hr id="216af5cf-afc2-801b-bcc6-d9338246b8b9"/><p id="216af5cf-afc2-80af-99d5-c1c155c94724" class="">
+</p><h3 id="216af5cf-afc2-80db-8edd-d3c54ae19ebc" class="">Two-Class Decision Forest + 카이제곱 피처 선택</h3><ul id="216af5cf-afc2-80dc-8010-e6c568dbae60" class="bulleted-list"><li style="list-style-type:disc">랜덤 포레스트를 사용한 이진 분류 모델이며, 그 이전에 카이제곱 통계를 활용해 중요 피처만 선택하여 학습 성능을 높이는 절차를 포함함.</li></ul><p id="216af5cf-afc2-80ac-aa96-c83d0dba4f52" class="">
+</p><p id="216af5cf-afc2-8039-9ba8-ea21e7630cf7" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8023-a01a-d6f149c105c2" class="column-list"><div id="216af5cf-afc2-808a-8036-cd8f97521b57" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-802d-9aa9-e3e6039d7445" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-8038-aa7b-d8d99b5c2cf8" class="numbered-list" start="2"><li><code>Edit Metadat</code></li></ol><ol type="1" id="216af5cf-afc2-8093-8174-dc3c779fa803" class="numbered-list" start="3"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-8091-9de8-c34f6cf68ca2" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-8040-a954-f93b3acd1851" class="numbered-list" start="5"><li><code>Filter Based Feature Selection</code><ul id="216af5cf-afc2-800f-962c-d950197a3e86" class="bulleted-list"><li style="list-style-type:disc">Method: 카이제곱 (Chi-Squared) 통계</li></ul><ul id="216af5cf-afc2-8051-9ab3-d5cab5713c35" class="bulleted-list"><li style="list-style-type:disc">Target column: 예측할 이진 타깃</li></ul><ul id="216af5cf-afc2-80c9-bbcd-e7c93bb3b6cc" class="bulleted-list"><li style="list-style-type:disc">Number of features: 원하는 개수 설정 (예: 상위 8개)</li></ul></li></ol></div><div id="216af5cf-afc2-80c4-9bf4-ca17566bb62e" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80d5-b945-ff1ab11eda21" class="numbered-list" start="6"><li><code>Split Data</code></li></ol><ol type="1" id="216af5cf-afc2-809b-9909-f914601f078f" class="numbered-list" start="7"><li><code>Two-Class Decision Forest</code><p id="216af5cf-afc2-8088-84ac-d37edf29fe3b" class="">→ 카이제곱으로 선정된 피처 기반 분류 모델</p></li></ol><ol type="1" id="216af5cf-afc2-80f6-8ddf-d71af68a85f5" class="numbered-list" start="8"><li><code>Train Model</code>→<code>Score Model</code>→<code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-809d-ae23-d6758c90e2d7" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-80d5-8eb0-f40c552f8f2f" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 정확도. 높을수록 좋음</li></ul><ul id="216af5cf-afc2-80e0-95b0-e362363cf91f" class="bulleted-list"><li style="list-style-type:disc">Precision: Positive 예측 중 실제 Positive 비율</li></ul><ul id="216af5cf-afc2-8013-881a-f69c15476724" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 Positive 중 모델이 올바르게 예측한 비율</li></ul><ul id="216af5cf-afc2-8073-9c0f-f7220ec231e4" class="bulleted-list"><li style="list-style-type:disc">F1 Score: Precision과 Recall의 균형</li></ul><ul id="216af5cf-afc2-8082-97c5-ead67eb5af81" class="bulleted-list"><li style="list-style-type:disc">AUC: 분류기 전체 성능 종합. 1에 가까울수록 우수</li></ul><p id="216af5cf-afc2-80fb-9c94-d315e61f97fa" class="">
+</p><hr id="216af5cf-afc2-80c2-b6ab-ecf14f8c95e7"/><p id="216af5cf-afc2-803d-b658-e5b6a6f26596" class="">
+</p><h3 id="216af5cf-afc2-800f-9116-ef4ee286221a" class="">Two-Class Support Vector Machine (SVM)</h3><ul id="216af5cf-afc2-8073-8674-f074fa6145f5" class="bulleted-list"><li style="list-style-type:disc">데이터를 고차원 공간으로 매핑한 뒤, 클래스 간의 마진이 가장 넓은 초평면을 찾아 분류하는 알고리즘</li></ul><ul id="216af5cf-afc2-80c3-97a3-f3faedc99fed" class="bulleted-list"><li style="list-style-type:disc">고차원 분리 문제에 특히 효과적이며, 커널 함수를 사용하여 비선형 문제에도 대응할 수 있음</li></ul><p id="216af5cf-afc2-80aa-baa5-dc1433ee250f" class="">
+</p><p id="216af5cf-afc2-80ba-ab77-e8f5913b1d28" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-80b3-adc5-f9706a503095" class="column-list"><div id="216af5cf-afc2-8075-8db6-c949589366b1" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-8038-9855-c497b14d9828" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-80ad-a6f3-f9896ca62c92" class="numbered-list" start="2"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-80ea-9a80-d2b5992fc957" class="numbered-list" start="3"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-802f-8e70-fbba8c41894f" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-800a-b97a-e77f652c5a9e" class="numbered-list" start="5"><li><code>Normalize Data</code><p id="216af5cf-afc2-808a-b9f0-f75cf008133e" class="">→ SVM은 거리 기반 모델이므로 정규화가 매우 중요함(tanh 사용)</p></li></ol><ol type="1" id="216af5cf-afc2-804a-a2e4-f5362cdb405d" class="numbered-list" start="6"><li><code>Execute Python Script</code><p id="216af5cf-afc2-80b9-9856-da49bcd27642" class="">→ 비용 민감 처리</p></li></ol></div><div id="216af5cf-afc2-804b-a66b-d225e188d3fd" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80d3-b332-fe68a9ec364f" class="numbered-list" start="7"><li><code>Split Data</code></li></ol><ol type="1" id="216af5cf-afc2-802d-b3e9-e90602e64f07" class="numbered-list" start="7"><li><code>Two-Class Support Vector Machine</code><p id="216af5cf-afc2-80db-8bb4-df57066f9146" class="">→ SVM 분류 모델 적용</p><ul id="216af5cf-afc2-80a9-9a96-e0fe395898ff" class="bulleted-list"><li style="list-style-type:disc">커널 종류: 기본값 (선형 or RBF, 명시 X)</li></ul><ul id="216af5cf-afc2-8065-96b3-ca9712610fee" class="bulleted-list"><li style="list-style-type:disc">복잡도(C): 기본값 사용</li></ul><ul id="216af5cf-afc2-80ec-aa16-d30aeaaffbbe" class="bulleted-list"><li style="list-style-type:disc">Number of iterations: 100 (기본값)</li></ul></li></ol><ol type="1" id="216af5cf-afc2-80a5-a95a-d42ebc2aea49" class="numbered-list" start="8"><li><code>Train Model</code>→<code>Score Model</code>→<code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-8095-80b0-cc1371711a09" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-80f1-b1f4-e514011ed0f9" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 예측 중 정답 비율</li></ul><ul id="216af5cf-afc2-80eb-9540-dcbfb577034a" class="bulleted-list"><li style="list-style-type:disc">Precision: Positive로 예측한 것 중 실제 Positive 비율</li></ul><ul id="216af5cf-afc2-80c0-bf6c-d7b65a5620b1" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 Positive 중 모델이 맞춘 비율</li></ul><ul id="216af5cf-afc2-809f-a6a1-ea060d7db258" class="bulleted-list"><li style="list-style-type:disc">F1 Score: Precision과 Recall의 조화 평균</li></ul><ul id="216af5cf-afc2-80b7-8d6b-d84759da4476" class="bulleted-list"><li style="list-style-type:disc">AUC: 전체 분류 성능 종합 지표</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="216af5cf-afc2-8061-a7ee-ede43f35e3ae" class="code"><code class="language-Python"># Execute Python Script: 비용 민감 처리
+# 소수 클래스(고위험 그룹)를 인위적으로 복제하여 불균형 보정
+import pandas as pd
+
+def azureml_main(dataframe1 = None, dataframe2 = None):
+		# iloc[:, 7]: 레이블 컬럼 (신용등급 or 위험도 등)이 1 or 2인 행 필터링
+    df_label_1 = dataframe1[dataframe1.iloc[:, 7] == 1]     # 저위험
+    df_label_2 = dataframe1[dataframe1.iloc[:, 7] == 2]     # 고위험
+
+    # 고위험 데이터를 5배 복제하여 부풀리기(
+    # SMOTE 대신 직접 복제 방식을 사용한 oversampling 기법
+    result = df_label_1.append([df_label_2] * 5, ignore_index=True)
+    
+    return result,</code></pre><hr id="216af5cf-afc2-80ac-bf7a-e7a9b7dc86e3"/><p id="216af5cf-afc2-8039-b258-d94f27ff2166" class="">
+</p><h3 id="216af5cf-afc2-8054-974e-c818da0782f8" class="">Two-Class Logistic Regression + Stratified Split</h3><ul id="216af5cf-afc2-8063-92d8-f023c176d7c6" class="bulleted-list"><li style="list-style-type:disc">로지스틱 회귀는 확률을 기반으로 이진 분류를 수행하는 선형 모델</li></ul><ul id="216af5cf-afc2-80fc-96cd-c5a729bc59a0" class="bulleted-list"><li style="list-style-type:disc">입력값에 sigmoid 함수를 적용해 클래스 0 또는 1로 예측</li></ul><ul id="216af5cf-afc2-80c5-b717-e6ec873c856c" class="bulleted-list"><li style="list-style-type:disc"><strong>층화추출(stratified split)</strong>은 불균형 데이터를 공정하게 나누기 위해 각 클래스 비율을 유지한 채 학습/테스트셋 분할</li></ul><p id="216af5cf-afc2-80bc-87a8-cd327b6e5646" class="">
+</p><p id="216af5cf-afc2-8090-a8be-d0e9f73b60df" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8000-ab1f-d5f2f6d89129" class="column-list"><div id="216af5cf-afc2-8030-b963-e42cef24b519" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80ab-84b3-e06a1931ebd7" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-8079-8343-caac88d387df" class="numbered-list" start="2"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-8047-aac0-d85d8bfd911e" class="numbered-list" start="3"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-8050-b823-fd1c2c6eb506" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol></div><div id="216af5cf-afc2-801d-bfc5-d073cf9f2665" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-802b-8494-d541abee8aa0" class="numbered-list" start="5"><li><code>Split Data</code><ul id="216af5cf-afc2-80eb-852c-f198e45af177" class="bulleted-list"><li style="list-style-type:disc">Stratified split 옵션을 True로 설정</li></ul><ul id="216af5cf-afc2-8074-bc48-e70d23b9f7dc" class="bulleted-list"><li style="list-style-type:disc">클래스 불균형 문제 완화</li></ul></li></ol><ol type="1" id="216af5cf-afc2-8000-a404-f9d1b41256c1" class="numbered-list" start="6"><li><code>Two-Class Logistic Regression</code></li></ol><ol type="1" id="216af5cf-afc2-8058-9e17-c31278634c66" class="numbered-list" start="7"><li><code>Score Model</code> → <code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-80f1-8a50-e65e7fbe8095" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-801a-bf5a-f2a4ca79cc2d" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 예측 중 맞춘 비율 (높을수록 좋음)</li></ul><ul id="216af5cf-afc2-8042-ae36-f07c874e2d48" class="bulleted-list"><li style="list-style-type:disc">Precision: 양성으로 예측한 것 중 실제 양성 비율</li></ul><ul id="216af5cf-afc2-8093-abfa-e77424c9233a" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 양성 중 맞춘 비율</li></ul><ul id="216af5cf-afc2-804a-a7e3-f726ec0c5a47" class="bulleted-list"><li style="list-style-type:disc">F1 Score: 정밀도와 재현율의 조화 평균</li></ul><ul id="216af5cf-afc2-80aa-afae-f9d552eb9af6" class="bulleted-list"><li style="list-style-type:disc">AUC: 분류기의 종합적인 성능 (1에 가까울수록 좋음)</li></ul><p id="216af5cf-afc2-8062-8c3e-d7fc79aeee82" class="">
+</p><hr id="216af5cf-afc2-8079-bc2d-f98115016204"/><p id="216af5cf-afc2-80c8-8b27-de2d49246482" class="">
+</p><h3 id="216af5cf-afc2-80e3-8abf-fe25ad797221" class="">Two-Class Logistic Regression + Cross Validation</h3><ul id="216af5cf-afc2-801f-86c5-c56d21be14cd" class="bulleted-list"><li style="list-style-type:disc">로지스틱 회귀는 이진 분류를 위한 선형 모델로, 각 입력에 대해 특정 클래스일 확률을 예측</li></ul><ul id="216af5cf-afc2-80db-b4ab-e9187af4d478" class="bulleted-list"><li style="list-style-type:disc"><strong>교차검증</strong>(Cross Validation)은 모델의 일반화 성능을 평가하기 위한 방법으로, 데이터를 여러 조각으로 나누어 반복적으로 학습/테스트를 수행함</li></ul><p id="216af5cf-afc2-80a4-8020-d07b7eb717ae" class="">
+</p><p id="216af5cf-afc2-801c-a09c-c9e1709efe56" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8006-9584-da8b3c7469f9" class="column-list"><div id="216af5cf-afc2-8072-b304-ed50f34b67a7" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-802d-b180-dc33e44d2692" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-80af-9801-c970b8b11b67" class="numbered-list" start="2"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-8026-8929-c6a820f5004a" class="numbered-list" start="3"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-8043-960d-d2a7671eeb5b" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-803c-9ae9-ea22fd299376" class="numbered-list" start="5"><li><code>Two-Class Logistic Regression</code></li></ol></div><div id="216af5cf-afc2-801e-bebf-edc714c31dbf" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-8064-b9fb-c5640eab04f9" class="numbered-list" start="6"><li><code>Cross-Validate Model</code><ul id="216af5cf-afc2-80d1-8b05-ffb33eb1dd6e" class="bulleted-list"><li style="list-style-type:disc">Fold 수 설정 (예: 5-Fold)</li></ul><ul id="216af5cf-afc2-80b7-9e0a-f65041ddbdc4" class="bulleted-list"><li style="list-style-type:disc">모델의 일반화 성능을 보다 정확하게 평가</li></ul></li></ol><ol type="1" id="216af5cf-afc2-80cc-bd5c-f1f8f68264dc" class="numbered-list" start="7"><li><code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-80ef-8a10-cf5cee8779c4" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-809d-a3dc-d18d4e3e7ebe" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 예측 중 정답 비율</li></ul><ul id="216af5cf-afc2-807c-afbf-f0d4aac9c700" class="bulleted-list"><li style="list-style-type:disc">Precision: Positive로 예측한 것 중 실제 Positive 비율</li></ul><ul id="216af5cf-afc2-8082-9f15-c0d325076729" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 Positive 중 맞춘 비율</li></ul><ul id="216af5cf-afc2-80b9-b069-df293732228d" class="bulleted-list"><li style="list-style-type:disc">F1 Score: Precision과 Recall의 조화 평균</li></ul><ul id="216af5cf-afc2-802d-b11c-e323f3ec2b6b" class="bulleted-list"><li style="list-style-type:disc">AUC: 모델 분류 성능의 종합 평가 지표</li></ul><p id="216af5cf-afc2-80ae-92f2-ef600b26aaa0" class="">
+</p><hr id="216af5cf-afc2-804a-bcdf-f6eb0c6f4398"/><p id="216af5cf-afc2-808c-8eb0-ee04dc6e2e90" class="">
+</p><h3 id="216af5cf-afc2-80cb-83ad-c3177b770c04" class="">Boosted Decision Tree + SMOTE</h3><ul id="216af5cf-afc2-8019-b911-c757b66b20f6" class="bulleted-list"><li style="list-style-type:disc">여러 개의 약한 트리를 순차적으로 학습시켜 오차를 보정하는 방식의 강력한 앙상블 분류기</li></ul><ul id="216af5cf-afc2-80ec-97ec-e3353f7de561" class="bulleted-list"><li style="list-style-type:disc"><strong>SMOTE</strong> (Synthetic Minority Over-sampling Technique)는 소수 클래스의 데이터를 <strong>합성하여</strong> 클래스 불균형 문제를 해결하는 전처리 기법</li></ul><p id="216af5cf-afc2-802e-b3a3-e21b23a0ece3" class="">
+</p><p id="216af5cf-afc2-802e-9e37-eeb48412dc12" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8076-902d-cf8264a093b7" class="column-list"><div id="216af5cf-afc2-80b2-b501-d13ff5f0590a" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-806b-b8fb-c146a96a7893" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-809c-bd95-c33c856d3e0d" class="numbered-list" start="2"><li><code>Execute Python Script 1</code></li></ol><ol type="1" id="216af5cf-afc2-805e-97bc-d423e8fd69fa" class="numbered-list" start="3"><li><code>Execute Python Script 2</code></li></ol><ol type="1" id="216af5cf-afc2-8064-bc41-f26500aab807" class="numbered-list" start="4"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-8011-840d-fbe5353889b5" class="numbered-list" start="5"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-8055-abf6-e564cca77688" class="numbered-list" start="6"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-802c-9e70-d0228d8cd9a9" class="numbered-list" start="7"><li><code>SMOTE</code><p id="216af5cf-afc2-80c1-9c28-e3e11da43d75" class="">→ 소수 클래스 데이터를 합성하여 클래스 균형 조정</p><ul id="216af5cf-afc2-806f-ac32-c4fc1d361d02" class="bulleted-list"><li style="list-style-type:disc">Oversampling rate: 기본값</li></ul><ul id="216af5cf-afc2-808c-b6b2-f5fdbf0190ff" class="bulleted-list"><li style="list-style-type:disc">k-nearest neighbors: 기본값</li></ul></li></ol></div><div id="216af5cf-afc2-80a6-be85-e18017ed086c" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-807c-920c-ed3a8f9d87f8" class="numbered-list" start="6"><li><code>Split Data</code></li></ol><ol type="1" id="216af5cf-afc2-8053-96c1-ddfcde309072" class="numbered-list" start="7"><li><code>Two-Class Boosted Decision Tree</code><ul id="216af5cf-afc2-80db-a78e-eb9cb1963562" class="bulleted-list"><li style="list-style-type:disc">Max number of leaves per tree</li></ul><ul id="216af5cf-afc2-8084-9aca-e274c3e02751" class="bulleted-list"><li style="list-style-type:disc">Learning rate</li></ul><ul id="216af5cf-afc2-80f9-855d-f70eff6dc630" class="bulleted-list"><li style="list-style-type:disc">Minimum number of samples per leaf</li></ul></li></ol><ol type="1" id="216af5cf-afc2-808f-8905-f75bdcd16718" class="numbered-list" start="8"><li><code>Train Model</code>→<code>Score Model</code>→<code>Evaluate Model</code></li></ol><p id="216af5cf-afc2-80e4-82a9-e853d1591eb0" class="">
+</p></div></div><p id="216af5cf-afc2-8035-ad15-cb07d8aefccd" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-8091-b13e-f2abb696bb42" class="bulleted-list"><li style="list-style-type:disc">Accuracy: 전체 예측 중 정답 비율</li></ul><ul id="216af5cf-afc2-80e2-9b94-dfe1611bd1af" class="bulleted-list"><li style="list-style-type:disc">Precision: Positive로 예측한 것 중 실제 Positive 비율</li></ul><ul id="216af5cf-afc2-80a7-914f-c9484730d265" class="bulleted-list"><li style="list-style-type:disc">Recall: 실제 Positive 중 모델이 맞춘 비율</li></ul><ul id="216af5cf-afc2-80aa-8374-d05f58239e54" class="bulleted-list"><li style="list-style-type:disc">F1 Score: Precision과 Recall의 조화 평균</li></ul><ul id="216af5cf-afc2-80f4-a918-da6e2c20f6da" class="bulleted-list"><li style="list-style-type:disc">AUC: 모델 분류 성능의 종합 지표 (1에 가까울수록 우수)</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="216af5cf-afc2-80b2-bcdd-cb16c86e2b28" class="code"><code class="language-Python"># Execute Python Script 1: 결측값 많은 행 제거
+def azureml_main(dataframe1 = None, dataframe2 = None):
+    rate = 0.7
+    nan_ratio_per_row = dataframe1.isna().mean(axis=1)
+    df_cleaned = dataframe1[nan_ratio_per_row &lt; rate]
+    return df_cleaned,
+
+# Execute Python Script 2: 0이 많은 열 제거
+def azureml_main(dataframe1 = None, dataframe2 = None):
+    rate = 0.7
+    zero_ratio_cols = (dataframe1 == 0).mean()
+    df_cleaned = dataframe1.drop(columns = zero_ratio_cols[zero_ratio_cols &gt;= rate].index)
+    return df_cleaned,
+</code></pre><p id="216af5cf-afc2-80b8-98f6-c8f72113fe41" class="">
+</p><hr id="216af5cf-afc2-80c6-b8f7-fffd94c57822"/><p id="216af5cf-afc2-8089-8653-e4a0713afb8d" class="">
+</p><h2 id="216af5cf-afc2-8007-a1b2-d52c17d3c5d4" class="">회귀 모델</h2><h3 id="216af5cf-afc2-8008-924f-d10278129411" class="">선형 회귀 (Linear Regression)</h3><ul id="216af5cf-afc2-8037-8476-f855de21037f" class="bulleted-list"><li style="list-style-type:disc">입력 변수와 출력 변수 간 선형 관계를 기반으로 수치 값을 예측하는 회귀 알고리즘. </li></ul><ul id="216af5cf-afc2-8075-b0c0-fde48a3b8539" class="bulleted-list"><li style="list-style-type:disc">빠르고 해석이 쉬움.</li></ul><p id="216af5cf-afc2-807b-b17d-d2703ad4121f" class="">
+</p><p id="216af5cf-afc2-80dc-ab44-e6faedc86c69" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><ol type="1" id="216af5cf-afc2-802d-9602-e4800b27a289" class="numbered-list" start="1"><li><code>Execute Python Script</code><p id="216af5cf-afc2-80f7-bf64-e2a5b731bcb2" class="">→ 분석에 불필요한 컬럼 제거</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="216af5cf-afc2-80af-a778-d3608b210f10" class="code"><code class="language-Python">import pandas as pd
+
+def azureml_main(dataframe1 = None, dataframe2 = None):
+    print(&quot;자전거 렌탈 데이터:&quot;)
+    print(dataframe1.head())
+
+    # 불필요한 컬럼 제거
+    df = dataframe1.drop(columns=[&#x27;instant&#x27;, &#x27;dteday&#x27;, &#x27;casual&#x27;, &#x27;registered&#x27;])
+
+    return df,</code></pre></li></ol><div id="216af5cf-afc2-8093-aa5d-d04b930c19c8" class="column-list"><div id="216af5cf-afc2-8022-91eb-e1fa59ac4730" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-8085-80ad-c4982ca917ae" class="numbered-list" start="2"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-80a5-8e2b-c3233cda4b19" class="numbered-list" start="3"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-80f4-ae8d-eba18c63df80" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-8090-8698-f485869db7ed" class="numbered-list" start="5"><li><code>Normalize Data</code></li></ol></div><div id="216af5cf-afc2-805d-8a36-d369178d2091" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-80a9-bade-e300a47cde4e" class="numbered-list" start="6"><li><code>Split Data</code></li></ol><ol type="1" id="216af5cf-afc2-80e6-8f39-f6f93f6a1482" class="numbered-list" start="7"><li><code>Linear Regression</code></li></ol><ol type="1" id="216af5cf-afc2-805d-8d5e-c8a9a3e8536f" class="numbered-list" start="8"><li><code>Train Model</code>→<code>Score Model</code>→<code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-80ab-b3ce-d8b677640897" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-805f-b072-ce84184cba52" class="bulleted-list"><li style="list-style-type:disc">MAE (Mean Absolute Error): 예측 오차의 절댓값 평균. 작을수록 좋음</li></ul><ul id="216af5cf-afc2-80df-bf8d-fb9fd1b56335" class="bulleted-list"><li style="list-style-type:disc">MSE (Mean Squared Error): 오차 제곱 평균. 이상치에 민감, 작을수록 좋음</li></ul><ul id="216af5cf-afc2-80ee-8157-c1aad5fb211a" class="bulleted-list"><li style="list-style-type:disc">RMSE: MSE의 제곱근. 직관적 해석 가능</li></ul><p id="216af5cf-afc2-80f4-8e3c-f3cdbbf22f97" class="">
+</p><hr id="216af5cf-afc2-8019-8ea7-fef9e04dd41e"/><p id="216af5cf-afc2-803d-bca1-ca85eebeba7b" class="">
+</p><h3 id="216af5cf-afc2-802c-8c71-f10806434b63" class="">Decision Tree Regression</h3><ul id="216af5cf-afc2-800b-ae70-d8f3a53519a0" class="bulleted-list"><li style="list-style-type:disc">데이터를 여러 조건에 따라 트리 구조로 분할해가며 예측값을 계산하는 결정 트리 기반 회귀 모델. </li></ul><ul id="216af5cf-afc2-8087-8772-f357808f97ca" class="bulleted-list"><li style="list-style-type:disc">비선형 관계나 복잡한 조건에서도 유연하게 대응 가능.</li></ul><p id="216af5cf-afc2-800f-b0b1-e363145809ee" class="">
+</p><p id="216af5cf-afc2-8080-b014-d2d348247161" class=""><strong>✅ 구성 요소 순서 및 설명</strong></p><div id="216af5cf-afc2-8046-a791-cad4c23b03f2" class="column-list"><div id="216af5cf-afc2-8074-8c2a-c31dbb6c81ea" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-8021-8968-fea8813803bd" class="numbered-list" start="1"><li><code>Select Columns in Dataset</code></li></ol><ol type="1" id="216af5cf-afc2-80b8-b872-d0c0b112aa06" class="numbered-list" start="2"><li><code>Clean Missing Data</code></li></ol><ol type="1" id="216af5cf-afc2-8080-9683-f0c5108813d4" class="numbered-list" start="3"><li><code>Edit Metadata</code></li></ol><ol type="1" id="216af5cf-afc2-804a-996c-c8909b0a89f9" class="numbered-list" start="4"><li><code>Convert to Indicator Values</code></li></ol><ol type="1" id="216af5cf-afc2-8069-8e9f-dfbef7e6885c" class="numbered-list" start="5"><li><code>Split Data</code></li></ol><p id="216af5cf-afc2-80e4-8dd8-cdff0f10a9ed" class="">
+</p></div><div id="216af5cf-afc2-802f-9ec6-e212834c3b02" style="width:50%" class="column"><ol type="1" id="216af5cf-afc2-8041-a432-c0972f2d42d1" class="numbered-list" start="6"><li><code>Decision Forest Regression</code><p id="216af5cf-afc2-800c-8fa2-df4bddd6924d" class="">→ 회귀 트리 모델 구성</p><ul id="216af5cf-afc2-804e-a002-c14fa5860ea2" class="bulleted-list"><li style="list-style-type:disc">반복적으로 분할하며 예측</li></ul><ul id="216af5cf-afc2-8006-8f3c-dfd4daa3f5d6" class="bulleted-list"><li style="list-style-type:disc">분기 기준: 최소 잔차 제곱합(SSE)</li></ul></li></ol><ol type="1" id="216af5cf-afc2-803b-92c6-c88cc36db5ca" class="numbered-list" start="7"><li><code>Train Model</code>→<code>Score Model</code>→<code>Evaluate Model</code></li></ol></div></div><p id="216af5cf-afc2-8041-b8b3-f692cd294ad0" class=""><strong>📊 모델 평가 지표</strong></p><ul id="216af5cf-afc2-80af-bbed-c5cd125135e1" class="bulleted-list"><li style="list-style-type:disc">MAE (Mean Absolute Error): 예측값과 실제값의 절대 차이 평균. 작을수록 좋음</li></ul><ul id="216af5cf-afc2-8063-baba-d326c4c24ce5" class="bulleted-list"><li style="list-style-type:disc">MSE (Mean Squared Error): 오차 제곱의 평균. 이상치에 민감</li></ul><ul id="216af5cf-afc2-8046-9f45-d85099f311c7" class="bulleted-list"><li style="list-style-type:disc">RMSE (Root Mean Squared Error): MSE의 제곱근. 오차를 실제 단위로 해석 가능</li></ul><p id="216af5cf-afc2-80d2-b39d-ef3d6c7eb945" class="">
+</p><hr id="216af5cf-afc2-80a6-b8e2-d216bb64f167"/><p id="216af5cf-afc2-8040-833b-fb7247b7f266" class="">
+</p><h2 id="216af5cf-afc2-8042-97a9-c5b36ba8b821" class="">시각화 Code</h2><h3 id="216af5cf-afc2-8037-aad6-fde4d510cd13" class="">Heatmap</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="216af5cf-afc2-8022-bb76-ea02534cc323" class="code"><code class="language-Python">import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from azureml.core import Run
+
+def azureml_main(dataframe1 = None, dataframe2 = None):
+    plt.figure(figsize=(10, 8))
+    corr_matrix = dataframe1.corr()
+    sns.heatmap(corr_matrix, annot=True, fmt=&quot;.2f&quot;, cmap=&quot;coolwarm&quot;)
+    plt.title(&quot;Heatmap&quot;)
+
+    img_file = &quot;heatmap.png&quot;
+    plt.savefig(img_file)
+    plt.close()
+
+    run = Run.get_context(allow_offline=True)
+    run.upload_file(f&quot;graphics/{img_file}&quot;, img_file)
+
+    return dataframe1,</code></pre><h3 id="216af5cf-afc2-8082-8681-ca8dcaf0822d" class="">Scatterplot</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="216af5cf-afc2-80e2-8a4c-fdaf5ec6ad41" class="code"><code class="language-Python">import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from azureml.core import Run
+
+def azureml_main(dataframe1 = None, dataframe2 = None):
+
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(data=dataframe1, x=&#x27;bill_length_mm&#x27;, y=&#x27;bill_depth_mm&#x27;, hue=&#x27;species&#x27;, palette=&#x27;Set1&#x27;)
+    plt.title(&#x27;Bill length and depth by species&#x27;)
+    plt.legend(title=&#x27;species&#x27;)
+
+    img_file = &quot;scatterplot.png&quot;
+    plt.savefig(img_file)
+    plt.close()
+
+    run = Run.get_context(allow_offline=True)
+    run.upload_file(f&quot;graphics/{img_file}&quot;, img_file)
+
+    return dataframe1,
+</code></pre><p id="216af5cf-afc2-801a-a69e-e0cd7e0a98a8" class="">
+</p><p id="216af5cf-afc2-801c-af27-dea25b64b590" class="">
+</p><hr id="216af5cf-afc2-809c-b4ca-ea01d7aae2c6"/><p id="216af5cf-afc2-8080-83f1-dbb3f5e771c5" class="">
+</p><h2 id="216af5cf-afc2-80c5-aac2-dc2509d4fdf1" class="">Normalize Transformation Method 정리</h2><table id="216af5cf-afc2-8036-921e-d0fac1cf6507" class="simple-table"><thead class="simple-table-header"><tr id="216af5cf-afc2-80e0-8878-c95f254bf4da"><th id="ite;" class="simple-table-header-color simple-table-header" style="width:99px">방법</th><th id="\e:p" class="simple-table-header-color simple-table-header" style="width:303px">설명</th><th id="bsTw" class="simple-table-header-color simple-table-header" style="width:310px">사용하면 좋은 상황</th></tr></thead><tbody><tr id="216af5cf-afc2-80e4-b97c-cdf086de5e93"><td id="ite;" class="" style="width:99px"><strong>ZScore</strong></td><td id="\e:p" class="" style="width:303px">평균 0, 표준편차 1로 표준화 <br/><br/><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mtext>′</mtext><mo>=</mo><mi>x</mi><mo>−</mo><mi>μ</mi><mi>σ</mi><msup><mi>x</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>μ</mi></mrow><mi>σ</mi></mfrac></mrow><annotation encoding="application/x-tex">x′=x−μσx&#x27; = \frac{x - \mu}{\sigma}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5556em;"></span><span class="mord mathnormal">x</span><span class="mord">′</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9463em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1994em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8544em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4461em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">μ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span></td><td id="bsTw" class="" style="width:310px">- 데이터가 정규분포(또는 근사)일 때  <br/>- 선형 회귀, 로지스틱 회귀, SVM 등 거리 기반 모델<br/></td></tr><tr id="216af5cf-afc2-8097-ab65-c847d0d598f1"><td id="ite;" class="" style="width:99px"><strong>MinMax</strong></td><td id="\e:p" class="" style="width:303px">모든 값을 0~1로 정규화 <br/> <br/><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mtext>′</mtext><mo>=</mo><mi>x</mi><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mtext>⁡</mtext><mi>m</mi><mi>a</mi><mi>x</mi><mtext>⁡</mtext><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mtext>⁡</mtext><msup><mi>x</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>min</mi><mo>⁡</mo></mrow><mrow><mi>max</mi><mo>⁡</mo><mo>−</mo><mi>min</mi><mo>⁡</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">x′=x−min⁡max⁡−min⁡x&#x27; = \frac{x - \min}{\max - \min}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5556em;"></span><span class="mord mathnormal">x</span><span class="mord">′</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">min</span><span class="mord">⁡</span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mord">⁡</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7519em;"></span><span class="mord mathnormal">min</span><span class="mord">⁡</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2648em;vertical-align:-0.4033em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8615em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">m</span><span class="mtight">a</span><span class="mtight">x</span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mtight">−</span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mop mtight"><span class="mtight">m</span><span class="mtight">i</span><span class="mtight">n</span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="mbin mtight">−</span><span class="mop mtight"><span class="mtight">m</span><span class="mtight">i</span><span class="mtight">n</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4033em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span></td><td id="bsTw" class="" style="width:310px">- 트리 계열 모델 (Decision Tree, Random Forest 등)은 영향 없음 <br/>- K-means, 신경망 등 값의 범위 중요할 때<br/></td></tr><tr id="216af5cf-afc2-80a0-86b7-fae6e4def488"><td id="ite;" class="" style="width:99px"><strong>Logistic</strong></td><td id="\e:p" class="" style="width:303px">시그모이드 함수 사용<br/><br/><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mtext>′</mtext><mo>=</mo><mn>11</mn><mo>+</mo><mi>e</mi><mo>−</mo><mi>x</mi><msup><mi>x</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">x′=11+e−xx&#x27; = \frac{1}{1 + e^{-x}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5556em;"></span><span class="mord mathnormal">x</span><span class="mord">′</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">11</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7519em;"></span><span class="mord mathnormal">x</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2484em;vertical-align:-0.4033em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7027em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight">x</span></span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4033em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span></td><td id="bsTw" class="" style="width:310px">- 데이터가 극단적으로 퍼져 있고 <br/>- 0~1 사이 확률형태로 변환하고 싶을 때<br/></td></tr><tr id="216af5cf-afc2-80d6-81b1-f239559c4cd2"><td id="ite;" class="" style="width:99px"><strong>LogNormal</strong></td><td id="\e:p" class="" style="width:303px">로그-정규 변환 <br/><br/><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mtext>′</mtext><mo>=</mo><mi>l</mi><mi>n</mi><mtext>⁡</mtext><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>x</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mi>ln</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x′=ln⁡(x+1)x&#x27; = \ln(x + 1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5556em;"></span><span class="mord mathnormal">x</span><span class="mord">′</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">n</span><span class="mord">⁡</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">ln</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span></td><td id="bsTw" class="" style="width:310px">- 양수 데이터이고 <br/>- 극단적인 이상치, 오른쪽 꼬리가 긴 분포에서 사용<br/></td></tr><tr id="216af5cf-afc2-806b-89ae-cacb710c661a"><td id="ite;" class="" style="width:99px"><strong>Tanh</strong></td><td id="\e:p" class="" style="width:303px">쌍곡 탄젠트 함수 사용 <br/><br/><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mtext>′</mtext><mo>=</mo><mi>t</mi><mi>a</mi><mi>n</mi><mi>h</mi><mtext>⁡</mtext><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><msup><mi>x</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mi>tanh</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x′=tanh⁡(x)x&#x27; = \tanh(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5556em;"></span><span class="mord mathnormal">x</span><span class="mord">′</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.25em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">anh</span><span class="mord">⁡</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">tanh</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span></td><td id="bsTw" class="" style="width:310px">- 평균 0 중심으로 압축하고 싶을 때  <br/>- 분포를 [-1, 1]로 제한하고 싶을 때 (신경망 입력 등)<br/></td></tr></tbody></table><h3 id="216af5cf-afc2-80b2-9101-cc93d02c4ab4" class="">📌 모델별 추천 방식</h3><table id="216af5cf-afc2-8087-a994-ffea2a657e54" class="simple-table"><thead class="simple-table-header"><tr id="216af5cf-afc2-80aa-8ee3-cc5a8abe910f"><th id="WcVy" class="simple-table-header-color simple-table-header" style="width:294.40625px">모델</th><th id="i^|w" class="simple-table-header-color simple-table-header" style="width:415px">추천 정규화 방식</th></tr></thead><tbody><tr id="216af5cf-afc2-80d2-929b-d016e323fd5d"><td id="WcVy" class="" style="width:294.40625px">선형 회귀 / 로지스틱 회귀</td><td id="i^|w" class="" style="width:415px">ZScore</td></tr><tr id="216af5cf-afc2-80a0-a470-e9935e089676"><td id="WcVy" class="" style="width:294.40625px">SVM</td><td id="i^|w" class="" style="width:415px">ZScore</td></tr><tr id="216af5cf-afc2-80e6-b6be-f221c101fd75"><td id="WcVy" class="" style="width:294.40625px">K-means</td><td id="i^|w" class="" style="width:415px">MinMax or ZScore</td></tr><tr id="216af5cf-afc2-805a-b347-f823e4a5832a"><td id="WcVy" class="" style="width:294.40625px">신경망 (Neural Network)</td><td id="i^|w" class="" style="width:415px">MinMax, Tanh, Logistic</td></tr><tr id="216af5cf-afc2-80d3-b8e8-fcce9d8686ff"><td id="WcVy" class="" style="width:294.40625px">트리 계열 모델 (DT, RF, Boosted DT)</td><td id="i^|w" class="" style="width:415px">❌ 필요 없음 (트리는 정규화에 영향 거의 없음)</td></tr><tr id="216af5cf-afc2-8048-bd17-f4861146a875"><td id="WcVy" class="" style="width:294.40625px">PCA, 거리 기반 알고리즘</td><td id="i^|w" class="" style="width:415px">ZScore or MinMax</td></tr></tbody></table><ul id="216af5cf-afc2-8017-b7fd-d608afe2b075" class="bulleted-list"><li style="list-style-type:disc">ZScore vs MinMax 선택 기준<p id="216af5cf-afc2-804b-92fa-e3966b2562e9" class="">→ 이상치에 민감하면 ZScore,</p><p id="216af5cf-afc2-8076-b731-cebc373539ae" class="">→ 값을 모두 0~1로 고정하고 싶으면 MinMax</p></li></ul><ul id="216af5cf-afc2-808f-95c9-dac1418abd1a" class="bulleted-list"><li style="list-style-type:disc">Log/LogNormal은 값이 양수일 때만 사용하세요. 음수 있으면 오류 발생합니다.</li></ul><p id="216af5cf-afc2-802f-b691-cebf66a91701" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
