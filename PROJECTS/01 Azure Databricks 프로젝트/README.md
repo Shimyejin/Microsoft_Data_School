@@ -16,7 +16,7 @@
 | 추천 시스템      | Cosine Similarity, Content-Based Filtering |
 | 데이터 플랫폼    | Azure Databricks, Databricks Jobs API |
 | 데이터 저장      | PostgreSQL, psycopg2 |
-| 웹 구현          | Flask, HTML/CSS |
+| 웹 구현          | Flask, HTML/CSS, JavaScript |
 | 외부 API 연동    | Azure OpenAI API (GPT), YouTube API, yt-dlp |
 | 시각화           | Databricks Dashboard |
 
