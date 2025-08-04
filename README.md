@@ -20,7 +20,7 @@
 - AzureDataFactory&AzureMachineLearning을 활용한 솔루션 설계
 - AzureFuction을 활용한 알람 및 경고 기능 구현
 - Azure Stream Analytics를 활용한 실시간 데이터 처리  
-- Fabric을 활용한 통합 솔루션 구성
+- Fabric을 활용한 통합 솔루션 구현
 - AzureSQLDatabase구성 및 관리
 
 #### 3️⃣ SQL Server  
