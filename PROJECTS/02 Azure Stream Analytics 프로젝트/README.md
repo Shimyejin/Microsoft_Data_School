@@ -8,7 +8,7 @@
 ## 📌 프로젝트 개요
 
 MSGA(My Score Good Area)는 공공데이터와 최신 뉴스 데이터를 기반으로 동네의 다차원적 가치를 측정하고, 사용자가 중시하는 요소(교통, 교육, 안전, 복지 등)에 맞는 동네를 추천하는 시스템입니다.  
-정보 비대칭으로 인한 불리한 주거 선택 문제를 해결하고, 개인의 라이프스타일에 맞춘 합리적 의사결정을 지원합니다:contentReference[oaicite:0]{index=0}.
+정보 비대칭으로 인한 불리한 주거 선택 문제를 해결하고, 개인의 라이프스타일에 맞춘 합리적 의사결정을 지원합니다.
 
 ---
 
@@ -17,6 +17,7 @@ MSGA(My Score Good Area)는 공공데이터와 최신 뉴스 데이터를 기반
 | 영역             | 도구 / 기술 |
 |------------------|-------------|
 | 데이터 수집      | 공공데이터 API (병원, 약국, 도서관, 학원 등), CSV, Naver News API, 호갱노노 크롤링 |
+| 데이터 처리      | Azure Functions, Logic Batch, Exponential Backoff |
 | 데이터 정제      | 주소 표준화(법정동 기준), 텍스트 파싱 |
 | 감성 분석        | Azure OpenAI (GPT-4.1-nano) |
 | 실시간 처리      | Stream Analytics |
@@ -30,7 +31,7 @@ MSGA(My Score Good Area)는 공공데이터와 최신 뉴스 데이터를 기반
 ### 1. 데이터 수집 및 전처리
 - 20여 종 이상의 공공데이터 API, 뉴스 API, 호갱노노 크롤링
 - 복지/문화, 교육, 교통, 안전, 환경, 생활편의, 사회이슈, 부동산 등 **8개 카테고리**
-- API 요청 한계(1000건) → **Batch 처리 + 자동 재시도(Exponential Backoff)** 적용:contentReference[oaicite:1]{index=1}  
+- API 요청 한계(1000건) → Batch 처리 + 자동 재시도(Exponential Backoff)
 - 모든 데이터는 **법정동 단위로 표준화**
 
 ### 2. 데이터 정제 및 가중치 부여
@@ -40,18 +41,18 @@ MSGA(My Score Good Area)는 공공데이터와 최신 뉴스 데이터를 기반
   - 환경 쾌적성 지수 (수질, 오염 배출시설, 산책로)
   - 도시 안전도 지수 (범죄, 재난, 교통사고 + 뉴스 감성점수)
   - 교육 인프라 지수 (학교, 학원, 강습)
-  - 생활편의, 교통 접근성, 부동산 감정지수, 사회 분위기 등:contentReference[oaicite:2]{index=2}
+  - 생활편의, 교통 접근성, 부동산 감정지수, 사회 분위기 등
 
 ### 3. 감정 분석 및 뉴스 반영
 - **Naver News API**로 최신 뉴스 수집
 - 키워드 기반 뉴스 기사 감정 점수(1~5) → 정규화(LogMinMax)
-- 사회 이슈, 안전, 교통 혼잡 등 동네 실시간 분위기 반영:contentReference[oaicite:3]{index=3}
+- 사회 이슈, 안전, 교통 혼잡 등 동네 실시간 분위기 반영
 
 ### 4. 자동화 파이프라인 (Azure)
 - Azure Functions: 주기적 데이터 수집 자동화
 - Stream Analytics: 실시간 데이터 처리
 - Cosmos DB: 표준화/정제 데이터 저장
-- Power BI: 통합 대시보드 제공:contentReference[oaicite:4]{index=4}
+- Power BI: 통합 대시보드 제공
 
 ### 5. 결과 제공
 - 사용자 맞춤형 조건에 따라 동네 추천
@@ -67,7 +68,7 @@ MSGA(My Score Good Area)는 공공데이터와 최신 뉴스 데이터를 기반
 3. Azure Functions → 자동 수집 및 정제
 4. OpenAI → 뉴스 감정 분석 및 요약
 5. Cosmos DB → 저장
-6. Power BI → 시각화 및 동네 추천 결과 제공:contentReference[oaicite:6]{index=6}
+6. Power BI → 시각화 및 동네 추천 결과 제공
 
 ---
 
@@ -76,7 +77,7 @@ MSGA(My Score Good Area)는 공공데이터와 최신 뉴스 데이터를 기반
 - **공공데이터 + 뉴스 실시간 반영** → 현실감 있는 동네 평가
 - **법정동 단위 세밀한 분석**
 - 사용자 맞춤형 가중치 설정 → **나만의 동네 추천**
-- Explainability: 점수 산출 근거와 가중치 모두 공개:contentReference[oaicite:7]{index=7}
+- Explainability: 점수 산출 근거와 가중치 모두 공개
 
 ---
 
@@ -86,7 +87,7 @@ MSGA(My Score Good Area)는 공공데이터와 최신 뉴스 데이터를 기반
 - **공정성**: 특정 지역·계층 편중 없이 서울 전역 데이터 활용
 - **신뢰성**: 공공데이터와 검증된 뉴스 기반
 - **개인정보 보호**: 개인식별정보는 일절 수집하지 않음
-- **안전성**: 데이터 파이프라인 오류 방지 및 로그 기록:contentReference[oaicite:8]{index=8}
+- **안전성**: 데이터 파이프라인 오류 방지 및 로그 기록
 
 ---
 
