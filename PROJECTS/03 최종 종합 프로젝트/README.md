@@ -6,7 +6,7 @@
 ---
 
 ## 🔗 링크
-- [ITC 서비스 바로가기](https://itc.today/)
+[ITC 서비스 바로가기](https://itc.today/)
 
 ---
 ## 📌 프로젝트 개요
