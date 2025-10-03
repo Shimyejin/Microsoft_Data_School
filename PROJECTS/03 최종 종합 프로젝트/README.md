@@ -48,7 +48,7 @@ ITC(Investment Training & Consulting)는 암호화폐 실시간 시세 및 과�
 ### 4. 개인 맞춤형 분석 & RAG 챗봇
 
 * 사용자 거래 이력 기반 PDF 보고서 생성 (손익, 총자산, 보유 종목 등)
-* **RAG 챗봇(Azure OpenAI)**을 통한 투자 결과 해석 및 Q&A 지원
+* RAG 챗봇(Azure OpenAI)을 통한 투자 결과 해석 및 Q&A 지원
 
 ### 5. 인프라 및 운영
 
