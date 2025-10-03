@@ -5,6 +5,10 @@
 
 ---
 
+## 🔗 링크
+- [ITC 서비스 바로가기](https://itc.today/)
+
+---
 ## 📌 프로젝트 개요
 
 ITC(Investment Training & Consulting)는 암호화폐 실시간 시세 및 과거 데이터를 기반으로 **모의투자·시뮬레이션**을 제공하고,
