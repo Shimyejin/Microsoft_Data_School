@@ -91,5 +91,3 @@ ITC(Investment Training & Consulting)는 암호화폐 실시간 시세 및 과�
 
 * 고명훈, 김지민, 박우재, 심예진, 오민석, 원대연
 * [멘토] 강형주, 임대건
-원하시면 제가 MUPIC, MSGA, ITC **세 개 프로젝트의 README 세트**를 한꺼번에 만들어드릴까요?
-
